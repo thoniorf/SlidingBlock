@@ -2,6 +2,7 @@ package it.slidingblock.gui;
 import java.awt.Image;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 public class ImageProvider
 {
 	private static Image redBlock1x1;
@@ -13,6 +14,10 @@ public class ImageProvider
 	private static Image redBlock2x2;
 	private static Image yellowBlock2x2;
 	private static Image startPanel;
+	private static ImageIcon play1;
+	private static ImageIcon play2;
+	private static ImageIcon close2;
+	private static ImageIcon close1;
 	static
 	{
 		try
@@ -26,11 +31,23 @@ public class ImageProvider
 			yellowBlock1x2=ImageIO.read(ImageProvider.class.getClassLoader().getResource("it/slidingblock/assets/yellowBlock1x2.png"));
 			yellowBlock2x1=ImageIO.read(ImageProvider.class.getClassLoader().getResource("it/slidingblock/assets/yellowBlock2x1.png"));
 			yellowBlock2x2=ImageIO.read(ImageProvider.class.getClassLoader().getResource("it/slidingblock/assets/yellowBlock2x2.png"));
+			play1=new ImageIcon(ImageIO.read(ImageProvider.class.getClassLoader().getResource("it/slidingblock/assets/play1.png")));
+			play2=new ImageIcon(ImageIO.read(ImageProvider.class.getClassLoader().getResource("it/slidingblock/assets/play2.png")));
+			close1=new ImageIcon(ImageIO.read(ImageProvider.class.getClassLoader().getResource("it/slidingblock/assets/close1.png")));
+			close2=new ImageIcon(ImageIO.read(ImageProvider.class.getClassLoader().getResource("it/slidingblock/assets/close2.png")));
 		}
 		catch (final IOException e)
 		{
 			System.out.println("Cannot read Image");
 		}
+	}
+	public static ImageIcon getPlay1()
+	{
+		return play1;
+	}
+	public static ImageIcon getPlay2()
+	{
+		return play2;
 	}
 	public static Image getRedBlock1x1()
 	{
@@ -48,6 +65,10 @@ public class ImageProvider
 	{
 		return redBlock2x2;
 	}
+	public static Image getStartPanel()
+	{
+		return startPanel;
+	}
 	public static Image getYellowBlock1x1()
 	{
 		return yellowBlock1x1;
@@ -64,8 +85,12 @@ public class ImageProvider
 	{
 		return yellowBlock2x2;
 	}
-	public static Image getStartPanel()
+	public static ImageIcon getClose1()
 	{
-		return startPanel;
+		return close1;
+	}
+	public static ImageIcon getClose2()
+	{
+		return close2;
 	}
 }

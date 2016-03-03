@@ -4,15 +4,22 @@ import javax.swing.JPanel;
 public class StartPanel extends JPanel
 {
 	private static final long serialVersionUID=1;
+	ModifiedButton play;
+	ModifiedButton close;
 	public StartPanel(MainFrame frame)
 	{
 		this.setSize(frame.getSize());
-		System.out.println(this.getSize());
 		this.setLayout(null);
+		this.play=new ModifiedButton(ImageProvider.getPlay1(),ImageProvider.getPlay2(),null);
+		this.play.setBounds((int) (this.getWidth()*0.1),(int) (this.getHeight()*0.60),play.getWidth(),play.getHeight());
+		this.close=new ModifiedButton(ImageProvider.getClose1(),ImageProvider.getClose2(),e->System.exit(0));
+		this.close.setBounds((int) (this.getWidth()*0.1),(int) (this.getHeight()*0.80),close.getWidth(),close.getHeight());
+		this.add(play);
+		this.add(close);
 	}
 	@Override
 	protected void paintComponent(Graphics g)
 	{
-		g.drawImage(ImageProvider.getStartPanel(),0,0,ImageProvider.getStartPanel().getWidth(null),ImageProvider.getStartPanel().getHeight(null),null);
+		g.drawImage(ImageProvider.getStartPanel(),0,0,this.getWidth(),this.getHeight(),null);
 	}
 }
