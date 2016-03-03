@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="create_run_jar" name="Create Runnable Jar for SlidingBlock" basedir=".">
+    <!--this file was created by Eclipse Runnable JAR Export Wizard-->
+    <!--ANT 1.7 is required                                        -->
+    <target name="create_run_jar">
+    	<mkdir dir="${basedir}/bin"/>
+    	<copy todir="${basedir}/bin/it/slidingblock/assets/">
+    		<fileset dir="${basedir}/src/it/slidingblock/assets/">
+		    </fileset>
+    	</copy>
+
+        <jar destfile="${basedir}/SlidingBlock.jar" filesetmanifest="mergewithoutmain">
+            <manifest>
+                <attribute name="Main-Class" value="it.slidingblock.core.Manager"/>
+                <attribute name="Class-Path" value="."/>
+            </manifest>
+        </jar>
+    </target>
+	<target name="clean">
+	    <delete dir="${basedir}/bin"></delete>
+		<delete file="${basedir}/SlidingBlock.jar"></delete>
+   </target>
+</project>
