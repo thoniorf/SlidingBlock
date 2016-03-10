@@ -20,15 +20,15 @@ public class GamePanel extends JPanel
 
 	}
 
-	public JFrame getFrame()
-	{
-		return this.frame;
-	}
-
 	@Override
 	protected void paintComponent(Graphics g)
 	{
 		super.paintComponent(g);
 		world.paint(g);
+	}
+
+	public JFrame getFrame()
+	{
+		return this.frame;
 	}
 }

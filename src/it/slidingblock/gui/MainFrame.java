@@ -1,4 +1,6 @@
 package it.slidingblock.gui;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 public class MainFrame extends JFrame
 {
@@ -9,9 +11,21 @@ public class MainFrame extends JFrame
 		this.setUndecorated(false);
 		this.setLocationRelativeTo(null);
 		this.setTitle("Sliding Block");
-		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(0);
+		this.addWindowListener(new WindowAdapter()
+		{
+			@Override
+			public void windowClosing(WindowEvent e)
+			{
+				MainFrame.this.confirmExit();
+			}
+		});
 		this.setContentPane(new StartPanel(this));
 		this.setVisible(true);
+	}
+	public void confirmExit()
+	{
+		new RequestPanel(this,1);
 	}
 	public void switchPanelPlay()
 	{
