@@ -1,5 +1,10 @@
 package it.slidingblock.core.block;
 
+import java.awt.Graphics;
+
+import it.slidingblock.core.Matrix;
+import it.slidingblock.gui.ImageProvider;
+
 public class Block
 {
 	private int id;
@@ -26,6 +31,11 @@ public class Block
 	public int getHeigth()
 	{
 		return heigth;
+	}
+	
+	public void paint(Graphics g,Point p){
+		g.drawImage(ImageProvider.getBlocks().get("yellowBlock" + block.getHeigth() + "x" + block.getWidth()),
+				p.x * Matrix.cellsize, p.y * Matrix.cellsize, null);
 	}
 
 }
