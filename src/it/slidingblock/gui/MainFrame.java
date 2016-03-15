@@ -32,4 +32,9 @@ public class MainFrame extends JFrame
 		this.setContentPane(new GamePanel(this));
 		this.revalidate();
 	}
+	public void switchPanelStart()
+	{
+		this.setContentPane(new StartPanel(this));
+		this.revalidate();
+	}
 }
