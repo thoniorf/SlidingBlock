@@ -4,6 +4,8 @@ import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 public class MainFrame extends JFrame
 {
+	public static final int sumX=500;
+	public static final int sumY=100;
 	private static final long serialVersionUID=1L;
 	public MainFrame()
 	{
