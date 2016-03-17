@@ -53,6 +53,7 @@ public class Matrix
 	}
 	public boolean inserisci(Block b,Point o)
 	{
+		b.setPoint(o);
 		for (int i=o.y;i<o.y+b.getHeigth();i++)
 		{
 			for (int j=o.x;j<o.x+b.getWidth();j++)

@@ -9,8 +9,10 @@ public class Block
 	private int id;
 	private int width;
 	private int heigth;
+	protected Point p;
 	public Block(int id,int width,int heigth)
 	{
+		this.p=new Point(1,1);
 		this.id=id;
 		this.width=width;
 		this.heigth=heigth;
@@ -27,7 +29,11 @@ public class Block
 	{
 		return heigth;
 	}
-	public void paint(Graphics g,Point p)
+	public void setPoint(Point p)
+	{
+		this.p=p;
+	}
+	public void paint(Graphics g)
 	{
 		g.drawImage(ImageProvider.getBlocks().get("yellowBlock"+this.getHeigth()+"x"+this.getWidth()),(p.x*Matrix.cellsize)+Matrix.cellsize+MainFrame.sumX,
 				(p.y*Matrix.cellsize)+Matrix.cellsize+MainFrame.sumY,null);
