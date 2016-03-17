@@ -12,7 +12,6 @@ public class Block
 	protected Point p;
 	public Block(int id,int width,int heigth)
 	{
-		this.p=new Point(1,1);
 		this.id=id;
 		this.width=width;
 		this.heigth=heigth;
@@ -37,5 +36,9 @@ public class Block
 	{
 		g.drawImage(ImageProvider.getBlocks().get("yellowBlock"+this.getHeigth()+"x"+this.getWidth()),(p.x*Matrix.cellsize)+Matrix.cellsize+MainFrame.sumX,
 				(p.y*Matrix.cellsize)+Matrix.cellsize+MainFrame.sumY,null);
+	}
+	public Point getPoint()
+	{
+		return p;
 	}
 }

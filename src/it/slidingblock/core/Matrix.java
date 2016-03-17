@@ -51,6 +51,10 @@ public class Matrix
 	{
 		return width;
 	}
+	public int getCell(int i,int j)
+	{
+		return matrix[i][j];
+	}
 	public boolean inserisci(Block b,Point o)
 	{
 		b.setPoint(o);
@@ -88,7 +92,7 @@ public class Matrix
 			case DOWN:
 				for (Point point:temp)
 				{
-					if (point.getX()<height)
+					if (point.getX()<height-1)
 						matrix[((int) point.getY())+1][(int) point.getX()]=id;
 					else
 						return false;
@@ -97,7 +101,7 @@ public class Matrix
 			case RIGHT:
 				for (Point point:temp)
 				{
-					if (point.getX()<width)
+					if (point.getX()<width-1)
 						matrix[(int) point.getY()][((int) point.getX())+1]=id;
 					else
 						return false;

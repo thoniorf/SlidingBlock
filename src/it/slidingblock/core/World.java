@@ -6,8 +6,16 @@ import it.slidingblock.core.block.Block;
 import it.slidingblock.core.block.KeyBlock;
 public class World
 {
+	public Matrix getMatrix()
+	{
+		return matrix;
+	}
 	private Matrix matrix;
 	private ArrayList<Block> blocks;
+	public ArrayList<Block> getBlocks()
+	{
+		return blocks;
+	}
 	public World()
 	{
 		blocks=new ArrayList<>();

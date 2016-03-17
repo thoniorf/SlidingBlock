@@ -34,9 +34,9 @@ public class RequestPanel extends JPanel
 		this.write.setForeground(Color.WHITE);
 		this.write.setHorizontalAlignment((int) CENTER_ALIGNMENT);
 		this.noButton=new ModifiedButton(ImageProvider.getNo1(),ImageProvider.getNo2(),e -> dialog.dispose());
-		this.noButton.setBounds(((int) (this.getWidth()*0.7)-noButton.getWidth()),(int) (this.getHeight()*0.8),noButton.getWidth(),noButton.getHeight());
+		this.noButton.setBounds(((int) (this.getWidth()*0.7)-noButton.getWidth()),(int) (this.getHeight()*0.6),noButton.getWidth(),noButton.getHeight());
 		this.yesButton=new ModifiedButton(ImageProvider.getYes1(),ImageProvider.getYes2(),e -> System.exit(0));
-		this.yesButton.setBounds((int) (this.getWidth()*0.3),(int) (this.getHeight()*0.8),yesButton.getWidth(),yesButton.getHeight());
+		this.yesButton.setBounds((int) (this.getWidth()*0.3),(int) (this.getHeight()*0.6),yesButton.getWidth(),yesButton.getHeight());
 		this.add(this.write);
 		this.add(this.noButton);
 		this.add(this.yesButton);
