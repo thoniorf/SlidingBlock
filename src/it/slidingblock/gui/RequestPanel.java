@@ -8,11 +8,11 @@ import javax.swing.border.LineBorder;
 public class RequestPanel extends JPanel
 {
 	private static final long serialVersionUID=1;
-	private ModifiedButton noButton;
-	private ModifiedButton yesButton;
 	private JDialog dialog;
-	private JLabel write;
 	private MainFrame frame;
+	private ModifiedButton noButton;
+	private JLabel write;
+	private ModifiedButton yesButton;
 	public RequestPanel(MainFrame frame,int i)
 	{
 		this.frame=frame;

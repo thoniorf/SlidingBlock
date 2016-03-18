@@ -11,12 +11,7 @@ public class KeyBlock extends Block
 		super(id,width,heigth);
 	}
 	@Override
-	public void setPoint(Point p)
-	{
-		super.setPoint(p);
-	}
-	@Override
-	public void paint(Graphics g)
+	public void paint(Graphics g,Point p)
 	{
 		g.drawImage(ImageProvider.getBlocks().get("redBlock"+this.getHeigth()+"x"+this.getWidth()),p.x*Matrix.cellsize+Matrix.cellsize+MainFrame.sumX,p.y*Matrix.cellsize+Matrix.cellsize+MainFrame.sumY,
 				null);

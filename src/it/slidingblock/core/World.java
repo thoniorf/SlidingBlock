@@ -6,30 +6,27 @@ import it.slidingblock.core.block.Block;
 import it.slidingblock.core.block.KeyBlock;
 public class World
 {
-	public Matrix getMatrix()
-	{
-		return matrix;
-	}
-	private Matrix matrix;
 	private ArrayList<Block> blocks;
-	public ArrayList<Block> getBlocks()
-	{
-		return blocks;
-	}
+	private Matrix matrix;
 	public World()
 	{
 		blocks=new ArrayList<>();
 		makeLevel();
+	}
+	public ArrayList<Block> getBlocks()
+	{
+		return blocks;
+	}
+	public Matrix getMatrix()
+	{
+		return matrix;
 	}
 	public void makeLevel()
 	{
 		matrix=new Matrix(4,4,1);
 		// other block
 		for (int i=1;i<6;i++)
-		{
-			Block b=new Block(i,1,1);
-			blocks.add(b);
-		}
+			blocks.add(new Block(i,1,1));
 		// insert
 		matrix.inserisci(blocks.get(0),new Point(0,0));
 		matrix.inserisci(blocks.get(1),new Point(1,1));
@@ -42,12 +39,11 @@ public class World
 	}
 	public void paint(Graphics g)
 	{
-		// matrix paint
 		matrix.paint(g);
-		// blocks paint
 		for (Block block:blocks)
 		{
-			block.paint(g);
+			Point p=matrix.getFirstPoint(block.getId());
+			block.paint(g,p);
 		}
 	}
 }

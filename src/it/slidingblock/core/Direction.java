@@ -1,5 +1,5 @@
 package it.slidingblock.core;
 
 public enum Direction {
-	UP, DOWN, LEFT, RIGHT
+	DOWN, LEFT, RIGHT, UP
 }

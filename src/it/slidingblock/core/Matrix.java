@@ -8,10 +8,10 @@ import it.slidingblock.gui.MainFrame;
 public class Matrix
 {
 	public static final int cellsize=50;
-	public int exitsize;
-	private int width;
 	private int height;
 	private int[][] matrix;
+	private int width;
+	public int exitsize;
 	public Matrix(int width,int height,int exitsize)
 	{
 		this.width=width;
@@ -21,6 +21,18 @@ public class Matrix
 		for (int i=0;i<height;i++)
 			for (int j=0;j<width;j++)
 				matrix[i][j]=0;
+	}
+	public int getCell(int i,int j)
+	{
+		return matrix[i][j];
+	}
+	public Point getFirstPoint(int id)
+	{
+		for (int i=0;i<height;i++)
+			for (int j=0;j<width;j++)
+				if (matrix[i][j]==id)
+					return new Point(j,i);
+		return null;
 	}
 	public int getHeight()
 	{
@@ -39,25 +51,12 @@ public class Matrix
 					temp.add(new Point(j,i));
 		return temp;
 	}
-	public Point getFirstPoint(int id)
-	{
-		for (int i=0;i<height;i++)
-			for (int j=0;j<width;j++)
-				if (matrix[i][j]==id)
-					return new Point(j,i);
-		return null;
-	}
 	public int getWidth()
 	{
 		return width;
 	}
-	public int getCell(int i,int j)
-	{
-		return matrix[i][j];
-	}
 	public boolean inserisci(Block b,Point o)
 	{
-		b.setPoint(o);
 		for (int i=o.y;i<o.y+b.getHeigth();i++)
 		{
 			for (int j=o.x;j<o.x+b.getWidth();j++)
@@ -70,6 +69,32 @@ public class Matrix
 			}
 		}
 		return true;
+	}
+	public void paint(Graphics g)
+	{
+		// matrix border paint
+		for (int i=0;i<=height;i++)
+		{
+			for (int j=0;j<=width;j++)
+			{
+				if (i==0||i==height||(i>0&&(j==0||j==width)))
+				{
+					if (!(i>=height-exitsize&&i<height&&j==0))
+					{
+						g.setColor(Color.DARK_GRAY);
+					}
+					else
+					{
+						g.setColor(Color.LIGHT_GRAY);
+					}
+				}
+				else
+				{
+					g.setColor(Color.LIGHT_GRAY);
+				}
+				g.fillRect((j*Matrix.cellsize)+MainFrame.sumX,(i*Matrix.cellsize)+MainFrame.sumY,Matrix.cellsize,Matrix.cellsize);
+			}
+		}
 	}
 	public boolean sposta(int id,Direction d)
 	{
@@ -84,7 +109,9 @@ public class Matrix
 				for (Point point:temp)
 				{
 					if (point.getY()>0)
+					{
 						matrix[((int) point.getY())-1][(int) point.getX()]=id;
+					}
 					else
 						return false;
 				}
@@ -118,31 +145,5 @@ public class Matrix
 				break;
 		}
 		return true;
-	}
-	public void paint(Graphics g)
-	{
-		// matrix border paint
-		for (int i=0;i<=height;i++)
-		{
-			for (int j=0;j<=width;j++)
-			{
-				if (i==0||i==height||(i>0&&(j==0||j==width)))
-				{
-					if (!(i>=height-exitsize&&i<height&&j==0))
-					{
-						g.setColor(Color.DARK_GRAY);
-					}
-					else
-					{
-						g.setColor(Color.LIGHT_GRAY);
-					}
-				}
-				else
-				{
-					g.setColor(Color.LIGHT_GRAY);
-				}
-				g.fillRect((j*Matrix.cellsize)+MainFrame.sumX,(i*Matrix.cellsize)+MainFrame.sumY,Matrix.cellsize,Matrix.cellsize);
-			}
-		}
 	}
 }

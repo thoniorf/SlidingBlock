@@ -7,24 +7,24 @@ import javax.swing.ImageIcon;
 public class ImageProvider
 {
 	private static HashMap<String,Image> blocks=new HashMap<>();
-	private static Image startPanel;
-	private static ImageIcon play1;
-	private static ImageIcon play2;
-	private static ImageIcon yes1;
-	private static ImageIcon yes2;
-	private static ImageIcon no1;
-	private static ImageIcon no2;
-	private static ImageIcon close2;
 	private static ImageIcon close1;
+	private static ImageIcon close2;
 	private static ImageIcon closePlayPanel1;
 	private static ImageIcon closePlayPanel2;
 	private static ImageIcon come1;
 	private static ImageIcon come2;
-	private static ImageIcon help1;
-	private static ImageIcon help2;
 	private static ImageIcon dlv1;
 	private static ImageIcon dlv2;
 	private static Image gamePanel;
+	private static ImageIcon help1;
+	private static ImageIcon help2;
+	private static ImageIcon no1;
+	private static ImageIcon no2;
+	private static ImageIcon play1;
+	private static ImageIcon play2;
+	private static Image startPanel;
+	private static ImageIcon yes1;
+	private static ImageIcon yes2;
 	static
 	{
 		try
@@ -61,22 +61,6 @@ public class ImageProvider
 			System.out.println("Cannot read Image");
 		}
 	}
-	public static ImageIcon getHelp1()
-	{
-		return help1;
-	}
-	public static ImageIcon getHelp2()
-	{
-		return help2;
-	}
-	public static ImageIcon getDlv1()
-	{
-		return dlv1;
-	}
-	public static ImageIcon getDlv2()
-	{
-		return dlv2;
-	}
 	private static void loadBlocks(String block) throws IOException
 	{
 		blocks.put(block,ImageIO.read(ImageProvider.class.getClassLoader().getResource("it/slidingblock/assets/"+block+".png")));
@@ -92,6 +76,42 @@ public class ImageProvider
 	public static ImageIcon getClose2()
 	{
 		return close2;
+	}
+	public static ImageIcon getClosePlayPanel1()
+	{
+		return closePlayPanel1;
+	}
+	public static ImageIcon getClosePlayPanel2()
+	{
+		return closePlayPanel2;
+	}
+	public static ImageIcon getCome1()
+	{
+		return come1;
+	}
+	public static ImageIcon getCome2()
+	{
+		return come2;
+	}
+	public static ImageIcon getDlv1()
+	{
+		return dlv1;
+	}
+	public static ImageIcon getDlv2()
+	{
+		return dlv2;
+	}
+	public static Image getGamePanel()
+	{
+		return gamePanel;
+	}
+	public static ImageIcon getHelp1()
+	{
+		return help1;
+	}
+	public static ImageIcon getHelp2()
+	{
+		return help2;
 	}
 	public static ImageIcon getNo1()
 	{
@@ -120,25 +140,5 @@ public class ImageProvider
 	public static ImageIcon getYes2()
 	{
 		return yes2;
-	}
-	public static ImageIcon getClosePlayPanel1()
-	{
-		return closePlayPanel1;
-	}
-	public static ImageIcon getClosePlayPanel2()
-	{
-		return closePlayPanel2;
-	}
-	public static ImageIcon getCome1()
-	{
-		return come1;
-	}
-	public static ImageIcon getCome2()
-	{
-		return come2;
-	}
-	public static Image getGamePanel()
-	{
-		return gamePanel;
 	}
 }

@@ -4,8 +4,8 @@ import javax.swing.JPanel;
 public class StartPanel extends JPanel
 {
 	private static final long serialVersionUID=1;
-	ModifiedButton play;
 	ModifiedButton close;
+	ModifiedButton play;
 	public StartPanel(MainFrame frame)
 	{
 		this.setSize(frame.getSize());

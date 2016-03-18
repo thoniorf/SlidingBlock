@@ -1,24 +1,27 @@
 package it.slidingblock.gui;
 import java.awt.Graphics;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import it.slidingblock.core.Direction;
 import it.slidingblock.core.Matrix;
 import it.slidingblock.core.World;
 public class GamePanel extends JPanel
 {
 	private static final long serialVersionUID=1L;
-	private MainFrame frame;
-	private World world;
+	private int bselected;
+	private ModifiedButton close;
+	private ModifiedButton comeToStart;
 	private int curX=0;
 	private int curY=0;
 	private ModifiedButton dlv;
+	private MainFrame frame;
 	private ModifiedButton help;
-	private ModifiedButton comeToStart;
-	private ModifiedButton close;
-	private int bselected;
+	private World world;
 	public GamePanel(MainFrame frame)
 	{
 		this.frame=frame;
@@ -27,37 +30,78 @@ public class GamePanel extends JPanel
 		this.setLayout(null);
 		this.setButtons();
 		this.bselected=-1;
+		this.addKeyListener(new KeyAdapter()
+		{
+			@Override
+			public void keyReleased(KeyEvent e)
+			{
+				switch (e.getKeyCode())
+				{
+					case KeyEvent.VK_LEFT:
+						if (world.getMatrix().sposta(bselected,Direction.LEFT)&&bselected>0)
+						{
+							System.out.println("ok-LEFT");
+						}
+						bselected=-1;
+						break;
+					case KeyEvent.VK_RIGHT:
+						if (world.getMatrix().sposta(bselected,Direction.RIGHT)&&bselected>0)
+						{
+							System.out.println("ok-RIGHT");
+						}
+						bselected=-1;
+						break;
+					case KeyEvent.VK_UP:
+						if (world.getMatrix().sposta(bselected,Direction.RIGHT)&&bselected>0)
+						{
+							System.out.println("ok-UP");
+						}
+						bselected=-1;
+						break;
+					case KeyEvent.VK_DOWN:
+						if (world.getMatrix().sposta(bselected,Direction.DOWN)&&bselected>0)
+						{
+							System.out.println("ok-DOWN");
+						}
+						bselected=-1;
+						break;
+					default:;
+				}
+				repaint();
+			}
+		});
 		this.addMouseMotionListener(new MouseMotionListener()
 		{
+			@Override
+			public void mouseDragged(MouseEvent e)
+			{
+				if (e.getX()-MainFrame.sumX-Matrix.cellsize<curX)
+				{
+					if (world.getMatrix().sposta(bselected,Direction.LEFT))
+						System.out.println("ok-left");
+				}
+				else if (e.getX()-MainFrame.sumX-Matrix.cellsize>curX)
+				{
+					if (world.getMatrix().sposta(bselected,Direction.RIGHT))
+						System.out.println("ok-right");
+				}
+				else if (e.getY()-MainFrame.sumY-Matrix.cellsize<curY)
+				{
+					if (world.getMatrix().sposta(bselected,Direction.UP))
+						System.out.println("ok-up");
+				}
+				else if (e.getY()-MainFrame.sumY-Matrix.cellsize>curY)
+				{
+					if (world.getMatrix().sposta(bselected,Direction.DOWN))
+						System.out.println("ok-down");
+				}
+				repaint();
+			}
 			@Override
 			public void mouseMoved(MouseEvent e)
 			{
 				curX=e.getX()-MainFrame.sumX-Matrix.cellsize;
 				curY=e.getY()-MainFrame.sumY-Matrix.cellsize;
-			}
-			@Override
-			public void mouseDragged(MouseEvent e)
-			{
-				// if (e.getX()<curX)
-				// {
-				// if (world.getMatrix().sposta(bselected,Direction.LEFT))
-				// System.out.println("ok-left");
-				// }
-				// else if (e.getX()>curX)
-				// {
-				// if (world.getMatrix().sposta(bselected,Direction.RIGHT))
-				// System.out.println("ok-right");
-				// }
-				// else if (e.getY()<curY)
-				// {
-				// if (world.getMatrix().sposta(bselected,Direction.UP))
-				// System.out.println("ok-up");
-				// }
-				// else if (e.getY()>curX)
-				// {
-				// if (world.getMatrix().sposta(bselected,Direction.DOWN))
-				// System.out.println("ok-down");
-				// }
 			}
 		});
 		this.addMouseListener(new MouseAdapter()
@@ -76,6 +120,8 @@ public class GamePanel extends JPanel
 			curX/=50;
 			curY/=50;
 			bselected=world.getMatrix().getCell(curY,curX);
+			System.out.println(bselected+" nella cella"+curX+"/"+curY);
+			requestFocus();
 		}
 	}
 	private void setButtons()
@@ -100,6 +146,10 @@ public class GamePanel extends JPanel
 		g.drawImage(ImageProvider.getGamePanel(),0,0,this.getWidth(),this.getHeight(),null);
 		world.paint(g);
 	}
+	public int getBselected()
+	{
+		return bselected;
+	}
 	public int getCurX()
 	{
 		return curX;
@@ -111,9 +161,5 @@ public class GamePanel extends JPanel
 	public JFrame getFrame()
 	{
 		return this.frame;
-	}
-	public int getBselected()
-	{
-		return bselected;
 	}
 }

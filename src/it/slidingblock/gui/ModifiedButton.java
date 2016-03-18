@@ -9,8 +9,8 @@ public class ModifiedButton extends JButton
 {
 	private static final long serialVersionUID=1;
 	private MouseAdapter passOn;
-	int differenceWidth;
 	int differenceHeight;
+	int differenceWidth;
 	public ModifiedButton(Icon icon1,Icon icon2,ActionListener a)
 	{
 		super(icon1);
