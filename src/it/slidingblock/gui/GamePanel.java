@@ -14,6 +14,16 @@ public class GamePanel extends JPanel
 {
 	private static final long serialVersionUID=1L;
 	private int bselected;
+	private int changeX;
+	public int getChangeX()
+	{
+		return changeX;
+	}
+	public int getChangeY()
+	{
+		return changeY;
+	}
+	private int changeY;
 	private ModifiedButton close;
 	private ModifiedButton comeToStart;
 	private int curX=0;
@@ -38,31 +48,35 @@ public class GamePanel extends JPanel
 				switch (e.getKeyCode())
 				{
 					case KeyEvent.VK_LEFT:
-						if (world.getMatrix().sposta(bselected,Direction.LEFT)&&bselected>0)
-						{
-							System.out.println("ok-LEFT");
-						}
+						if (bselected>0)
+							if (world.getMatrix().move(bselected,Direction.LEFT))
+							{
+								System.out.println("ok-LEFT");
+							}
 						bselected=-1;
 						break;
 					case KeyEvent.VK_RIGHT:
-						if (world.getMatrix().sposta(bselected,Direction.RIGHT)&&bselected>0)
-						{
-							System.out.println("ok-RIGHT");
-						}
+						if (bselected>0)
+							if (world.getMatrix().move(bselected,Direction.RIGHT))
+							{
+								System.out.println("ok-RIGHT");
+							}
 						bselected=-1;
 						break;
 					case KeyEvent.VK_UP:
-						if (world.getMatrix().sposta(bselected,Direction.RIGHT)&&bselected>0)
-						{
-							System.out.println("ok-UP");
-						}
+						if (bselected>0)
+							if (world.getMatrix().move(bselected,Direction.UP))
+							{
+								System.out.println("ok-UP");
+							}
 						bselected=-1;
 						break;
 					case KeyEvent.VK_DOWN:
-						if (world.getMatrix().sposta(bselected,Direction.DOWN)&&bselected>0)
-						{
-							System.out.println("ok-DOWN");
-						}
+						if (bselected>0)
+							if (world.getMatrix().move(bselected,Direction.DOWN))
+							{
+								System.out.println("ok-DOWN");
+							}
 						bselected=-1;
 						break;
 					default:;
@@ -75,26 +89,30 @@ public class GamePanel extends JPanel
 			@Override
 			public void mouseDragged(MouseEvent e)
 			{
-				if (e.getX()-MainFrame.sumX-Matrix.cellsize<curX)
+				if (bselected>0)
 				{
-					if (world.getMatrix().sposta(bselected,Direction.LEFT))
-						System.out.println("ok-left");
+					if (changeY<curY)
+					{
+						if (world.getMatrix().move(bselected,Direction.DOWN))
+							System.out.println("ok-DOWN");
+					}
+					else if (changeY>curY)
+					{
+						if (world.getMatrix().move(bselected,Direction.UP))
+							System.out.println("ok-UP");
+					}
+					else if (changeX<curX)
+					{
+						if (world.getMatrix().move(bselected,Direction.LEFT))
+							System.out.println("ok-left");
+					}
+					else if (changeX>curX)
+					{
+						if (world.getMatrix().move(bselected,Direction.RIGHT))
+							System.out.println("ok-right");
+					}
 				}
-				else if (e.getX()-MainFrame.sumX-Matrix.cellsize>curX)
-				{
-					if (world.getMatrix().sposta(bselected,Direction.RIGHT))
-						System.out.println("ok-right");
-				}
-				else if (e.getY()-MainFrame.sumY-Matrix.cellsize<curY)
-				{
-					if (world.getMatrix().sposta(bselected,Direction.UP))
-						System.out.println("ok-up");
-				}
-				else if (e.getY()-MainFrame.sumY-Matrix.cellsize>curY)
-				{
-					if (world.getMatrix().sposta(bselected,Direction.DOWN))
-						System.out.println("ok-down");
-				}
+				bselected=-1;
 				repaint();
 			}
 			@Override
@@ -115,8 +133,10 @@ public class GamePanel extends JPanel
 	}
 	private void blockSelected()
 	{
-		if ((curX>0&&curX<(world.getMatrix().getWidth()-1)*Matrix.cellsize)&&(curY>0&&curY<(world.getMatrix().getHeight()-1)*Matrix.cellsize))
+		if ((curX>0&&curX<(world.getMatrix().getWidth())*Matrix.cellsize)&&(curY>0&&curY<(world.getMatrix().getHeight())*Matrix.cellsize))
 		{
+			changeX=curX;
+			changeY=curY;
 			curX/=50;
 			curY/=50;
 			bselected=world.getMatrix().getCell(curY,curX);

@@ -17,7 +17,7 @@ public class Matrix
 		this.width=width;
 		this.height=height;
 		this.exitsize=exitsize;
-		this.matrix=new int[height][width];
+		this.matrix=new int[width][height];
 		for (int i=0;i<height;i++)
 			for (int j=0;j<width;j++)
 				matrix[i][j]=0;
@@ -45,17 +45,17 @@ public class Matrix
 	public ArrayList<Point> getPosition(int id)
 	{
 		ArrayList<Point> temp=new ArrayList<>();
-		for (int i=0;i<height;i++)
-			for (int j=0;j<width;j++)
+		for (int i=0;i<width;i++)
+			for (int j=0;j<height;j++)
 				if (matrix[i][j]==id)
-					temp.add(new Point(j,i));
+					temp.add(new Point(i,j));
 		return temp;
 	}
 	public int getWidth()
 	{
 		return width;
 	}
-	public boolean inserisci(Block b,Point o)
+	public boolean insert(Block b,Point o)
 	{
 		for (int i=o.y;i<o.y+b.getHeigth();i++)
 		{
@@ -73,13 +73,13 @@ public class Matrix
 	public void paint(Graphics g)
 	{
 		// matrix border paint
-		for (int i=0;i<=height;i++)
+		for (int i=0;i<=height+1;i++)
 		{
-			for (int j=0;j<=width;j++)
+			for (int j=0;j<=width+1;j++)
 			{
-				if (i==0||i==height||(i>0&&(j==0||j==width)))
+				if (i==0||i==height+1||(i>0&&(j==0||j==width+1)))
 				{
-					if (!(i>=height-exitsize&&i<height&&j==0))
+					if (!(i>=(height+1)-exitsize&&i<(height+1)&&j==0))
 					{
 						g.setColor(Color.DARK_GRAY);
 					}
@@ -96,54 +96,57 @@ public class Matrix
 			}
 		}
 	}
-	public boolean sposta(int id,Direction d)
+	public boolean move(int id,Direction d)
 	{
+		boolean canMove=true;
 		ArrayList<Point> temp=getPosition(id);
 		for (Point point:temp)
 		{
-			matrix[(int) point.getX()][(int) point.getY()]=0;
+			if (d==Direction.UP&&point.getX()==0)
+				canMove=false;
+			else if (d==Direction.DOWN&&point.getX()==height-1)
+				canMove=false;
+			else if (d==Direction.RIGHT&&point.getY()==width-1)
+				canMove=false;
+			else if (d==Direction.LEFT&&point.getY()==0)
+				canMove=false;
 		}
-		switch (d)
+		if (canMove)
 		{
-			case UP:
-				for (Point point:temp)
-				{
-					if (point.getY()>0)
+			for (Point point:temp)
+			{
+				matrix[(int) point.getX()][(int) point.getY()]=0;
+			}
+			switch (d)
+			{
+				case UP:
+					for (Point point:temp)
 					{
-						matrix[((int) point.getY())-1][(int) point.getX()]=id;
+						matrix[((int) point.getX())-1][(int) point.getY()]=id;
 					}
-					else
-						return false;
-				}
-				break;
-			case DOWN:
-				for (Point point:temp)
-				{
-					if (point.getX()<height-1)
-						matrix[((int) point.getY())+1][(int) point.getX()]=id;
-					else
-						return false;
-				}
-				break;
-			case RIGHT:
-				for (Point point:temp)
-				{
-					if (point.getX()<width-1)
-						matrix[(int) point.getY()][((int) point.getX())+1]=id;
-					else
-						return false;
-				}
-				break;
-			case LEFT:
-				for (Point point:temp)
-				{
-					if (point.getY()>0)
-						matrix[(int) point.getY()][((int) point.getX())-1]=id;
-					else
-						return false;
-				}
-				break;
+					break;
+				case DOWN:
+					for (Point point:temp)
+					{
+						matrix[((int) point.getX())+1][(int) point.getY()]=id;
+					}
+					break;
+				case RIGHT:
+					for (Point point:temp)
+					{
+						matrix[(int) point.getX()][((int) point.getY())+1]=id;
+					}
+					break;
+				case LEFT:
+					for (Point point:temp)
+					{
+						matrix[(int) point.getX()][((int) point.getY())-1]=id;
+					}
+					break;
+			}
+			return true;
 		}
-		return true;
+		else
+			return false;
 	}
 }

@@ -23,19 +23,19 @@ public class World
 	}
 	public void makeLevel()
 	{
-		matrix=new Matrix(4,4,1);
+		matrix=new Matrix(3,3,1);
 		// other block
 		for (int i=1;i<6;i++)
 			blocks.add(new Block(i,1,1));
 		// insert
-		matrix.inserisci(blocks.get(0),new Point(0,0));
-		matrix.inserisci(blocks.get(1),new Point(1,1));
-		matrix.inserisci(blocks.get(2),new Point(1,2));
-		matrix.inserisci(blocks.get(3),new Point(2,1));
-		matrix.inserisci(blocks.get(4),new Point(2,2));
+		matrix.insert(blocks.get(0),new Point(0,0));
+		matrix.insert(blocks.get(1),new Point(1,1));
+		matrix.insert(blocks.get(2),new Point(1,2));
+		matrix.insert(blocks.get(3),new Point(2,1));
+		matrix.insert(blocks.get(4),new Point(2,2));
 		// key block
 		blocks.add(new KeyBlock(6,2,1));
-		matrix.inserisci(blocks.get(5),new Point(1,0));
+		matrix.insert(blocks.get(5),new Point(1,0));
 	}
 	public void paint(Graphics g)
 	{
