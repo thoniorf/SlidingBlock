@@ -1,0 +1,33 @@
+#const max = 6. #maxint=max.
+% matrix
+row(1..3). col(1..3). cella(X,Y):-col(X),row(Y).
+% input facts
+blocco(1,1,1). blocco(6,2,1).
+key(6).
+exit(1,3).
+turno(T):-#int(T),T>0.
+% contenuto (blocco,turno,colonna,riga).
+contenuto(1,0,1,1). contenuto(6,0,2,1). contenuto(6,0,3,1).
+% adiacenza celle
+% adiacente(c1.colonna,c1.riga,c2.colonna,c2.riga)
+adiacente(X,Y,X,Y1):- cella(X,Y),cella(X,Y1),Y1=Y+1.
+adiacente(X,Y,X1,Y):- cella(X,Y),cella(X1,Y),X1=X+1.
+adiacente(X,Y,X1,Y1) :- adiacente(X1,Y1,X,Y).
+
+occupata(X,Y,T) :- contenuto(_,T,X,Y).
+vuota(X,Y,T) :- cella(X,Y),turno(T),not occupata(X,Y,T).
+%GUESS
+sposta(B,T) | nonSposta(B,T) :- blocco(B,_,_),turno(T).
+
+contenuto(B,T,X,Y) :- nonSposta(B,T),contenuto(B,T0,X,Y),T0=T-1,T>0.
+contenuto(B,T,X,Y) :- sposta(B,T),contenuto(B,T0,X0,Y0),adiacente(X0,Y0,X,Y),vuota(X,Y,T0),T0=T-1,T>0.
+
+% Non è possibile che in un turno non si muova niente.
+:-turno(T),#count{B:sposta(B,T)}=0.
+% Non è possibile spostare più di un blocco per turno
+:-sposta(B,T),sposta(B1,T),B1!=B.
+% Non è possibile che il blocco sia spezzato nello spostamento.
+:-contenuto(B,T,X,Y),contenuto(B,T,X1,Y1),not adiacente(X,Y,X1,Y1),X!=X1.
+:-contenuto(B,T,X,Y),contenuto(B,T,X1,Y1),not adiacente(X,Y,X1,Y1),Y!=Y1.
+% Non e possibile che il numero di che contengono il blocco eccedono la sua dimensione
+%:-blocco(B,W,H),turno(T),not #count{Xw:contenuto(B,T,Xw,Yw)}=W,not #count{Yh:contenuto(B,T,Xh,Yh)}=H.
