@@ -45,43 +45,29 @@ public class GamePanel extends JPanel
 			@Override
 			public void keyReleased(KeyEvent e)
 			{
-				switch (e.getKeyCode())
+				if (bselected>0)
 				{
-					case KeyEvent.VK_LEFT:
-						if (bselected>0)
-							if (world.getMatrix().move(bselected,Direction.LEFT))
-							{
-								System.out.println("ok-LEFT");
-							}
-						bselected=-1;
-						break;
-					case KeyEvent.VK_RIGHT:
-						if (bselected>0)
-							if (world.getMatrix().move(bselected,Direction.RIGHT))
-							{
-								System.out.println("ok-RIGHT");
-							}
-						bselected=-1;
-						break;
-					case KeyEvent.VK_UP:
-						if (bselected>0)
-							if (world.getMatrix().move(bselected,Direction.UP))
-							{
-								System.out.println("ok-UP");
-							}
-						bselected=-1;
-						break;
-					case KeyEvent.VK_DOWN:
-						if (bselected>0)
-							if (world.getMatrix().move(bselected,Direction.DOWN))
-							{
-								System.out.println("ok-DOWN");
-							}
-						bselected=-1;
-						break;
-					default:;
+					switch (e.getKeyCode())
+					{
+						case KeyEvent.VK_LEFT:
+							world.getMatrix().move(bselected,Direction.LEFT);
+							bselected=-1;
+							break;
+						case KeyEvent.VK_RIGHT:
+							world.getMatrix().move(bselected,Direction.RIGHT);
+							bselected=-1;
+							break;
+						case KeyEvent.VK_UP:
+							world.getMatrix().move(bselected,Direction.UP);
+							bselected=-1;
+							break;
+						case KeyEvent.VK_DOWN:
+							world.getMatrix().move(bselected,Direction.DOWN);
+							bselected=-1;
+							break;
+					}
+					repaint();
 				}
-				repaint();
 			}
 		});
 		this.addMouseMotionListener(new MouseMotionListener()
@@ -91,26 +77,14 @@ public class GamePanel extends JPanel
 			{
 				if (bselected>0)
 				{
-					if (changeY<curY)
-					{
-						if (world.getMatrix().move(bselected,Direction.DOWN))
-							System.out.println("ok-DOWN");
-					}
-					else if (changeY>curY)
-					{
-						if (world.getMatrix().move(bselected,Direction.UP))
-							System.out.println("ok-UP");
-					}
-					else if (changeX<curX)
-					{
-						if (world.getMatrix().move(bselected,Direction.LEFT))
-							System.out.println("ok-left");
-					}
-					else if (changeX>curX)
-					{
-						if (world.getMatrix().move(bselected,Direction.RIGHT))
-							System.out.println("ok-right");
-					}
+					if (changeY<e.getY()-MainFrame.sumY-Matrix.cellsize)
+						world.getMatrix().move(bselected,Direction.DOWN);
+					else if (changeY>e.getY()-MainFrame.sumY-Matrix.cellsize)
+						world.getMatrix().move(bselected,Direction.UP);
+					else if (changeX>e.getX()-MainFrame.sumX-Matrix.cellsize)
+						world.getMatrix().move(bselected,Direction.LEFT);
+					else if (changeX<e.getX()-MainFrame.sumX-Matrix.cellsize)
+						world.getMatrix().move(bselected,Direction.RIGHT);
 				}
 				bselected=-1;
 				repaint();
