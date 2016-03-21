@@ -1,8 +1,5 @@
 package it.slidingblock.gui;
 import java.awt.Graphics;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import javax.swing.JFrame;
@@ -40,61 +37,13 @@ public class GamePanel extends JPanel
 		this.setLayout(null);
 		this.setButtons();
 		this.bselected=-1;
-		this.addKeyListener(new KeyAdapter()
-		{
-			@Override
-			public void keyReleased(KeyEvent e)
-			{
-				if (bselected>0)
-				{
-					switch (e.getKeyCode())
-					{
-						case KeyEvent.VK_LEFT:
-							world.getMatrix().move(bselected,Direction.LEFT);
-							bselected=-1;
-							break;
-						case KeyEvent.VK_RIGHT:
-							world.getMatrix().move(bselected,Direction.RIGHT);
-							bselected=-1;
-							break;
-						case KeyEvent.VK_UP:
-							world.getMatrix().move(bselected,Direction.UP);
-							bselected=-1;
-							break;
-						case KeyEvent.VK_DOWN:
-							world.getMatrix().move(bselected,Direction.DOWN);
-							bselected=-1;
-							break;
-					}
-					repaint();
-				}
-			}
-		});
 		this.addMouseMotionListener(new MouseMotionListener()
 		{
 			@Override
 			public void mouseDragged(MouseEvent e)
 			{
 				blockSelected();
-				if (bselected>0)
-				{
-					int moveY=e.getY()-MainFrame.sumY-Matrix.cellsize;
-					int moveX=e.getX()-MainFrame.sumX-Matrix.cellsize;
-					if (Math.abs(moveY-changeY)>Math.abs(moveX-changeX))
-					{
-						if (changeY<e.getY()-MainFrame.sumY-Matrix.cellsize)
-							world.getMatrix().move(bselected,Direction.DOWN);
-						else if (changeY>e.getY()-MainFrame.sumY-Matrix.cellsize)
-							world.getMatrix().move(bselected,Direction.UP);
-					}
-					else
-					{
-						if (changeX>e.getX()-MainFrame.sumX-Matrix.cellsize)
-							world.getMatrix().move(bselected,Direction.LEFT);
-						else if (changeX<e.getX()-MainFrame.sumX-Matrix.cellsize)
-							world.getMatrix().move(bselected,Direction.RIGHT);
-					}
-				}
+				dragged(e);
 				bselected=-1;
 				repaint();
 			}
@@ -105,14 +54,28 @@ public class GamePanel extends JPanel
 				curY=e.getY()-MainFrame.sumY-Matrix.cellsize;
 			}
 		});
-		this.addMouseListener(new MouseAdapter()
+	}
+	private void dragged(MouseEvent e)
+	{
+		if (bselected>0)
 		{
-			@Override
-			public void mouseClicked(MouseEvent e)
+			int moveY=e.getY()-MainFrame.sumY-Matrix.cellsize;
+			int moveX=e.getX()-MainFrame.sumX-Matrix.cellsize;
+			if (Math.abs(moveY-changeY)>Math.abs(moveX-changeX))
 			{
-				blockSelected();
+				if (changeY<e.getY()-MainFrame.sumY-Matrix.cellsize)
+					world.getMatrix().move(bselected,Direction.DOWN);
+				else if (changeY>e.getY()-MainFrame.sumY-Matrix.cellsize)
+					world.getMatrix().move(bselected,Direction.UP);
 			}
-		});
+			else
+			{
+				if (changeX>e.getX()-MainFrame.sumX-Matrix.cellsize)
+					world.getMatrix().move(bselected,Direction.LEFT);
+				else if (changeX<e.getX()-MainFrame.sumX-Matrix.cellsize)
+					world.getMatrix().move(bselected,Direction.RIGHT);
+			}
+		}
 	}
 	private void blockSelected()
 	{
