@@ -77,14 +77,22 @@ public class GamePanel extends JPanel
 			{
 				if (bselected>0)
 				{
-					if (changeY<e.getY()-MainFrame.sumY-Matrix.cellsize)
-						world.getMatrix().move(bselected,Direction.DOWN);
-					else if (changeY>e.getY()-MainFrame.sumY-Matrix.cellsize)
-						world.getMatrix().move(bselected,Direction.UP);
-					else if (changeX>e.getX()-MainFrame.sumX-Matrix.cellsize)
-						world.getMatrix().move(bselected,Direction.LEFT);
-					else if (changeX<e.getX()-MainFrame.sumX-Matrix.cellsize)
-						world.getMatrix().move(bselected,Direction.RIGHT);
+					int moveY=e.getY()-MainFrame.sumY-Matrix.cellsize;
+					int moveX=e.getX()-MainFrame.sumX-Matrix.cellsize;
+					if (Math.abs(moveY-changeY)>Math.abs(moveX-changeX))
+					{
+						if (changeY<e.getY()-MainFrame.sumY-Matrix.cellsize)
+							world.getMatrix().move(bselected,Direction.DOWN);
+						else if (changeY>e.getY()-MainFrame.sumY-Matrix.cellsize)
+							world.getMatrix().move(bselected,Direction.UP);
+					}
+					else
+					{
+						if (changeX>e.getX()-MainFrame.sumX-Matrix.cellsize)
+							world.getMatrix().move(bselected,Direction.LEFT);
+						else if (changeX<e.getX()-MainFrame.sumX-Matrix.cellsize)
+							world.getMatrix().move(bselected,Direction.RIGHT);
+					}
 				}
 				bselected=-1;
 				repaint();
