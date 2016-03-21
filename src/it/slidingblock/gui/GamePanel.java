@@ -75,6 +75,7 @@ public class GamePanel extends JPanel
 			@Override
 			public void mouseDragged(MouseEvent e)
 			{
+				blockSelected();
 				if (bselected>0)
 				{
 					int moveY=e.getY()-MainFrame.sumY-Matrix.cellsize;
