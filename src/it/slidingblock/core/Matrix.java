@@ -99,7 +99,7 @@ public class Matrix
 	public boolean move(int id,Direction d)
 	{
 		ArrayList<Point> temp=getPosition(id);
-		if (canMove(temp,d))
+		if (canMove(temp,d,id))
 		{
 			for (Point point:temp)
 			{
@@ -137,7 +137,7 @@ public class Matrix
 		else
 			return false;
 	}
-	private boolean canMove(ArrayList<Point> temp,Direction d)
+	private boolean canMove(ArrayList<Point> temp,Direction d,int id)
 	{
 		boolean move=true;
 		for (Point point:temp)
@@ -146,28 +146,28 @@ public class Matrix
 			{
 				if (point.getX()==0)
 					move=false;
-				if (move&&matrix[((int) point.getX())-1][(int) point.getY()]!=0)
+				if (move&&(matrix[((int) point.getX())-1][(int) point.getY()]!=0)&&(matrix[((int) point.getX())-1][(int) point.getY()]!=id))
 					move=false;
 			}
 			else if (d==Direction.DOWN)
 			{
 				if (point.getX()==height-1)
 					move=false;
-				if (move&&matrix[((int) point.getX())+1][(int) point.getY()]!=0)
+				if (move&&(matrix[((int) point.getX())+1][(int) point.getY()]!=0)&&(matrix[((int) point.getX())+1][(int) point.getY()]!=id))
 					move=false;
 			}
 			else if (d==Direction.RIGHT)
 			{
 				if (point.getY()==width-1)
 					move=false;
-				if (move&&matrix[(int) point.getX()][((int) point.getY())+1]!=0)
+				if (move&&(matrix[(int) point.getX()][((int) point.getY())+1]!=0)&&(matrix[(int) point.getX()][((int) point.getY())+1]!=id))
 					move=false;
 			}
 			else if (d==Direction.LEFT)
 			{
 				if (point.getY()==0)
 					move=false;
-				if (move&&matrix[(int) point.getX()][((int) point.getY())-1]!=0)
+				if (move&&(matrix[(int) point.getX()][((int) point.getY())-1]!=0)&&(matrix[(int) point.getX()][((int) point.getY())-1]!=id))
 					move=false;
 			}
 		}

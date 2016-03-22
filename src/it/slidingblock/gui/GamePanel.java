@@ -86,8 +86,6 @@ public class GamePanel extends JPanel
 			curX/=50;
 			curY/=50;
 			bselected=world.getMatrix().getCell(curY,curX);
-			System.out.println(bselected+" nella cella"+curX+"/"+curY);
-			requestFocus();
 		}
 	}
 	private void setButtons()
