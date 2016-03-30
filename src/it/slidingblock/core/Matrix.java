@@ -22,6 +22,42 @@ public class Matrix
 			for (int j=0;j<width;j++)
 				matrix[i][j]=0;
 	}
+	private boolean canMove(ArrayList<Point> temp,Direction d,int id)
+	{
+		boolean move=true;
+		for (Point point:temp)
+		{
+			if (d==Direction.UP)
+			{
+				if (point.getX()==0)
+					move=false;
+				if (move&&(matrix[((int) point.getX())-1][(int) point.getY()]!=0)&&(matrix[((int) point.getX())-1][(int) point.getY()]!=id))
+					move=false;
+			}
+			else if (d==Direction.DOWN)
+			{
+				if (point.getX()==height-1)
+					move=false;
+				if (move&&(matrix[((int) point.getX())+1][(int) point.getY()]!=0)&&(matrix[((int) point.getX())+1][(int) point.getY()]!=id))
+					move=false;
+			}
+			else if (d==Direction.RIGHT)
+			{
+				if (point.getY()==width-1)
+					move=false;
+				if (move&&(matrix[(int) point.getX()][((int) point.getY())+1]!=0)&&(matrix[(int) point.getX()][((int) point.getY())+1]!=id))
+					move=false;
+			}
+			else if (d==Direction.LEFT)
+			{
+				if (point.getY()==0)
+					move=false;
+				if (move&&(matrix[(int) point.getX()][((int) point.getY())-1]!=0)&&(matrix[(int) point.getX()][((int) point.getY())-1]!=id))
+					move=false;
+			}
+		}
+		return move;
+	}
 	public int getCell(int i,int j)
 	{
 		return matrix[i][j];
@@ -61,40 +97,14 @@ public class Matrix
 		{
 			for (int j=o.x;j<o.x+b.getWidth();j++)
 			{
-				if (matrix[i][j]!=0)
+				if (matrix[j][i]!=0)
 				{
 					return false;
 				}
-				matrix[i][j]=b.getId();
+				matrix[j][i]=b.getId();
 			}
 		}
 		return true;
-	}
-	public void paint(Graphics g)
-	{
-		// matrix border paint
-		for (int i=0;i<=height+1;i++)
-		{
-			for (int j=0;j<=width+1;j++)
-			{
-				if (i==0||i==height+1||(i>0&&(j==0||j==width+1)))
-				{
-					if (!(i>=(height+1)-exitsize&&i<(height+1)&&j==0))
-					{
-						g.setColor(Color.DARK_GRAY);
-					}
-					else
-					{
-						g.setColor(Color.LIGHT_GRAY);
-					}
-				}
-				else
-				{
-					g.setColor(Color.LIGHT_GRAY);
-				}
-				g.fillRect((j*Matrix.cellsize)+MainFrame.sumX,(i*Matrix.cellsize)+MainFrame.sumY,Matrix.cellsize,Matrix.cellsize);
-			}
-		}
 	}
 	public boolean move(int id,Direction d)
 	{
@@ -137,40 +147,30 @@ public class Matrix
 		else
 			return false;
 	}
-	private boolean canMove(ArrayList<Point> temp,Direction d,int id)
+	public void paint(Graphics g)
 	{
-		boolean move=true;
-		for (Point point:temp)
+		// matrix border paint
+		for (int i=0;i<=height+1;i++)
 		{
-			if (d==Direction.UP)
+			for (int j=0;j<=width+1;j++)
 			{
-				if (point.getX()==0)
-					move=false;
-				if (move&&(matrix[((int) point.getX())-1][(int) point.getY()]!=0)&&(matrix[((int) point.getX())-1][(int) point.getY()]!=id))
-					move=false;
-			}
-			else if (d==Direction.DOWN)
-			{
-				if (point.getX()==height-1)
-					move=false;
-				if (move&&(matrix[((int) point.getX())+1][(int) point.getY()]!=0)&&(matrix[((int) point.getX())+1][(int) point.getY()]!=id))
-					move=false;
-			}
-			else if (d==Direction.RIGHT)
-			{
-				if (point.getY()==width-1)
-					move=false;
-				if (move&&(matrix[(int) point.getX()][((int) point.getY())+1]!=0)&&(matrix[(int) point.getX()][((int) point.getY())+1]!=id))
-					move=false;
-			}
-			else if (d==Direction.LEFT)
-			{
-				if (point.getY()==0)
-					move=false;
-				if (move&&(matrix[(int) point.getX()][((int) point.getY())-1]!=0)&&(matrix[(int) point.getX()][((int) point.getY())-1]!=id))
-					move=false;
+				if (i==0||i==height+1||(i>0&&(j==0||j==width+1)))
+				{
+					if (!(i>=(height+1)-exitsize&&i<(height+1)&&j==0))
+					{
+						g.setColor(Color.DARK_GRAY);
+					}
+					else
+					{
+						g.setColor(Color.LIGHT_GRAY);
+					}
+				}
+				else
+				{
+					g.setColor(Color.LIGHT_GRAY);
+				}
+				g.fillRect((j*Matrix.cellsize)+MainFrame.sumX,(i*Matrix.cellsize)+MainFrame.sumY,Matrix.cellsize,Matrix.cellsize);
 			}
 		}
-		return move;
 	}
 }

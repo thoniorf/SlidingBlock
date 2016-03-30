@@ -2,7 +2,6 @@ package it.slidingblock.gui;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import it.slidingblock.core.Direction;
 import it.slidingblock.core.Matrix;
@@ -12,22 +11,14 @@ public class GamePanel extends JPanel
 	private static final long serialVersionUID=1L;
 	private int bselected;
 	private int changeX;
-	public int getChangeX()
-	{
-		return changeX;
-	}
-	public int getChangeY()
-	{
-		return changeY;
-	}
 	private int changeY;
+	private int curX;
+	private int curY;
 	private ModifiedButton close;
 	private ModifiedButton comeToStart;
-	private int curX=0;
-	private int curY=0;
 	private ModifiedButton dlv;
-	private MainFrame frame;
 	private ModifiedButton help;
+	private MainFrame frame;
 	private World world;
 	public GamePanel(MainFrame frame)
 	{
@@ -55,6 +46,17 @@ public class GamePanel extends JPanel
 			}
 		});
 	}
+	private void blockSelected()
+	{
+		if ((curX>0&&curX<(world.getMatrix().getWidth())*Matrix.cellsize)&&(curY>0&&curY<(world.getMatrix().getHeight())*Matrix.cellsize))
+		{
+			changeX=curX;
+			changeY=curY;
+			curX/=50;
+			curY/=50;
+			bselected=world.getMatrix().getCell(curY,curX);
+		}
+	}
 	private void dragged(MouseEvent e)
 	{
 		if (bselected>0)
@@ -75,17 +77,6 @@ public class GamePanel extends JPanel
 				else if (changeX<e.getX()-MainFrame.sumX-Matrix.cellsize)
 					world.getMatrix().move(bselected,Direction.RIGHT);
 			}
-		}
-	}
-	private void blockSelected()
-	{
-		if ((curX>0&&curX<(world.getMatrix().getWidth())*Matrix.cellsize)&&(curY>0&&curY<(world.getMatrix().getHeight())*Matrix.cellsize))
-		{
-			changeX=curX;
-			changeY=curY;
-			curX/=50;
-			curY/=50;
-			bselected=world.getMatrix().getCell(curY,curX);
 		}
 	}
 	private void setButtons()
@@ -109,21 +100,5 @@ public class GamePanel extends JPanel
 		super.paintComponent(g);
 		g.drawImage(ImageProvider.getGamePanel(),0,0,this.getWidth(),this.getHeight(),null);
 		world.paint(g);
-	}
-	public int getBselected()
-	{
-		return bselected;
-	}
-	public int getCurX()
-	{
-		return curX;
-	}
-	public int getCurY()
-	{
-		return curY;
-	}
-	public JFrame getFrame()
-	{
-		return this.frame;
 	}
 }
