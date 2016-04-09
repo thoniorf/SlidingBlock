@@ -15,7 +15,6 @@ piena(X,Y):-cella(X,Y),blocco(_,X,Y).
 contiene(B,X,Y,0):-cella(X,Y),blocco(B,X,Y).
 contiene(0,X,Y,0):-cella(X,Y),not piena(X,Y).
 id(B):-blocco(B,_,_).
-nCPB(B,N):-id(B),#count{ID,X,Y:contiene(ID,X,Y,0),ID=B}=N,#int(N).
 %keyBlock
 key(7).
 %uscita
@@ -30,26 +29,26 @@ adiacente(X,Y,X1,Y1) :- adiacente(X1,Y1,X,Y).
 %%fino qua funziona%%
 
 %spostamenti
-sposta(B,X,Y,X1,Y1,T1) | nonSposta(B,X,Y,X1,Y1,T1):-contiene(B,X,Y,T),adiacente(X,Y,X1,Y1),contiene(0,X1,Y1,T),B>0,T1=T+1,uscita(N,M),key(K),contiene(G,N,M,T),G<>K,turno(T1).
-spostatiIN(B,X,Y,T1):-sposta(B,_,_,X,Y,T1),turno(T1).
-spostatiDA(B,X,Y,T1):-sposta(B,X,Y,_,_,T1),turno(T1).
-%ciao(B,X,Y,T):-contiene(B,X,Y,T),T=1.
+sposta(B,X,Y,X1,Y1,T1) v nonSposta(B,X,Y,X1,Y1,T1):-contiene(B,X,Y,T),adiacente(X,Y,X1,Y1),contiene(0,X1,Y1,T),B>0,T1=T+1.
+spostatiDA(B,X,Y,T1):-sposta(B,X,Y,_,_,T1).
+
+%non e possibile spostare se si e gia trovata la soluzione
+:-sposta(_,_,_,_,_,T1),uscita(N,M),key(K),contiene(G,N,M,T),G=K,T1=T+1.
 
 %non è posssibile rimettere un blocco spostato nel turno precedente nella posizione d'origine
 :-sposta(B,X,Y,X1,Y1,T1),contiene(B,X1,Y1,T),turno(T1),T=T1-1.
 
 %iterazioni
-contiene(B,X,Y,T):-spostatiIN(B,X,Y,T),turno(T).
-contiene(0,X,Y,T):-spostatiDA(B,X,Y,T),turno(T).
-contiene(B,X,Y,T1):-contiene(B,X,Y,T),T=T1-1,not spostatiDA(B,X,Y,T1),turno(T1),B>0.
-contiene(0,X,Y,T1):-contiene(0,X,Y,T),T=T1-1,spostatiIN(B,H,J,T1),id(B),turno(T1),X<>H.
-contiene(0,X,Y,T1):-contiene(0,X,Y,T),T=T1-1,spostatiIN(B,H,J,T1),id(B),turno(T1),Y<>J.
+contiene(B,X,Y,T):-sposta(B,_,_,X,Y,T).
+contiene(0,X,Y,T):-spostatiDA(B,X,Y,T).									
+contiene(B,X,Y,T1):-contiene(B,X,Y,T),T1=T+1,not spostatiDA(B,X,Y,T1),B>0.
+contiene(0,X,Y,T1):-contiene(0,X,Y,T),T=T1-1,sposta(B,_,_,H,J,T1),id(B),X<>H.
+contiene(0,X,Y,T1):-contiene(0,X,Y,T),T=T1-1,sposta(B,_,_,H,J,T1),id(B),Y<>J.
 %testato e funziona
 
 % si muove un solo blocco per turno e il numero di celle per blocco deve rimanere sempre uguale
 :-turno(T),#count{B:sposta(B,_,_,_,_,T)}>1.
-:-sposta(B,_,_,_,_,T),sposta(B1,_,_,_,_,T),B1!=B,turno(T).
-:-id(B),B>0,turno(T),#count{ID,X,Y:contiene(ID,X,Y,T),ID=B}=N,#int(N),nCPB(B,NUM),NUM<>N.
+:-sposta(B,_,_,_,_,T),sposta(B1,_,_,_,_,T),B1!=B.
 %testato e funziona
 
 %non è possibile che non ci sia una volta il blocco chiave nella posizione duscita
@@ -60,8 +59,8 @@ contiene(0,X,Y,T1):-contiene(0,X,Y,T),T=T1-1,spostatiIN(B,H,J,T1),id(B),turno(T1
 %testato e funziona
 
 %non e possibile spostare in due direzioni diverse
-%:-turno(T),#count{B,X,Y,V,Z:sposta(B,X,Y,V,Z,T)}>1.
+:-turno(T),#count{B,X,Y,V,Z:sposta(B,X,Y,V,Z,T)}>1.
 %si puo fare sia nel modo su che questo giu
-:-sposta(B,X,Y,X1,Y1,T),sposta(B,X,Y,X3,Y3,T),X3!=X1.
-:-sposta(B,X,Y,X1,Y1,T),sposta(B,X,Y,X3,Y3,T),Y3!=Y1.
+%:-sposta(B,X,Y,X1,Y1,T),sposta(B,X,Y,X3,Y3,T),X3!=X1.
+%:-sposta(B,X,Y,X1,Y1,T),sposta(B,X,Y,X3,Y3,T),Y3!=Y1.
 %testato e funziona

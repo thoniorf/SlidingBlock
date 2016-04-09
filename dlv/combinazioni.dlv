@@ -1,0 +1,53 @@
+#maxint=9.
+% matrix
+row(0..2). col(0..2). cella(X,Y):-col(X),row(Y).
+% input facts
+% blocks
+blocco(4,1,1). blocco(6,2,1).
+dim(4,1). dim(6,2).
+% key block
+key(6).
+% exit cell
+exit(0,2).
+% contiene (colonna,riga,blocco,turno).
+contiene(2,1,4,0).contiene(1,0,6,0).contiene(2,0,6,0).
+pivot(B,T,X,Y):-blocco(B,_,_),turno(T),#min{Xm:contiene(Xm,_,B,T)}=X,#int(X),#min{Ym:contiene(_,Ym,B,T)}=Y,#int(Y).
+%pivot(4,0,2,1). pivot(6,0,1,0).
+turno(1).
+% adiacenza celle
+% adiacente(c1.colonna,c1.riga,c2.colonna,c2.riga)
+adiacente(X,Y,X,Y1) :- cella(X,Y),cella(X,Y1),Y1=Y+1.
+adiacente(X,Y,X1,Y) :- cella(X,Y),cella(X1,Y),X1=X+1.
+adiacente(X,Y,X1,Y1) :- adiacente(X1,Y1,X,Y).
+% celle concesse per lo spostamento del blocco B
+
+dirPivot(B,T,giu) :- pivot(B,T,X,Y0),adiacente(X,Y0,X,Y),not contiene(X,Y,B1,T),blocco(B1,_,_),B!=B1,Y>Y0.
+dirPivot(B,T,sinistra) :- pivot(B,T,X0,Y),adiacente(X0,Y,X,Y),not contiene(X,Y,B1,T),blocco(B1,_,_),B!=B1,X<X0.
+dirPivot(B,T,su) :- pivot(B,T,X,Y0),adiacente(X,Y0,X,Y),not contiene(X,Y,B1,T),blocco(B1,_,_),B!=B1,Y<Y0.
+dirPivot(B,T,destra) :- pivot(B,T,X0,Y),adiacente(X0,Y,X,Y),not contiene(X,Y,B1,T),blocco(B1,_,_),B!=B1,X>X0.
+% blocco,turno,da-x,da-y,a-x,a-y,direzione
+next(B,T,X,Y0,X,Y,giu) :- contiene(X,Y0,B,T),adiacente(X,Y0,X,Y),not contiene(X,Y,B1,T),blocco(B1,_,_),B!=B1,Y>Y0.
+next(B,T,X0,Y,X,Y,sinistra) :- contiene(X0,Y,B,T),adiacente(X0,Y,X,Y),not contiene(X,Y,B1,T),blocco(B1,_,_),B!=B1,X<X0.
+next(B,T,X,Y0,X,Y,su) :- contiene(X,Y0,B,T),adiacente(X,Y0,X,Y),not contiene(X,Y,B1,T),blocco(B1,_,_),B!=B1,Y<Y0.
+next(B,T,X0,Y,X,Y,destra) :- contiene(X0,Y,B,T),adiacente(X0,Y,X,Y),not contiene(X,Y,B1,T),blocco(B1,_,_),B!=B1,X>X0.
+
+spostamenti(B,T,N,D) :- dirPivot(B,T,D),#count{X,Y:next(B,T,_,_,X,Y,D)}=N.
+ammissibili(B,T,D) :- spostamenti(B,T,N,D),dim(B,Dm),#int(N),#int(Dm),N=Dm.
+% Vittoria, quando il blocco chiave è contenuto nella cella d'uscita
+vittoria(T) :- turno(T),contiene(X,Y,B,T),key(B),exit(X,Y).
+
+sposta(B,T,X,Y,D) | nonsposta(B,T,X,Y,D) :- blocco(B,_,_),turno(T),ammissibili(B,T0,D),next(B,T0,_,_,X,Y,D),T0=T-1.
+
+spostato(B,T) :- sposta(B,T,_,_,_),turno(T).
+contiene(X,Y,B,T) :- sposta(B,T,X,Y,_),turno(T).
+contiene(X,Y,B,T) :- contiene(X,Y,B,T0),T0=T-1,not spostato(B,T),turno(T).
+turno(Tnext) :- sposta(_,T,_,_,_),Tnext=T+1,not vittoria(T).
+
+:-contiene(X,Y,B,T),contiene(X,Y,B1,T),B1!=B.
+:-sposta(B,T,_,_,_),sposta(B1,T,_,_,_),B1!=B.
+:-sposta(B,T,_,_,D),sposta(B,T,_,_,D1),D1!=D.
+:-sposta(B,T1,X,Y,_),sposta(B,T2,X,Y,_),T2=T1+1.
+:-sposta(_,T,_,_,_),#count{X,Y:sposta(_,T,X,Y,_)}>1.
+%:-#count{V:vittoria(V)}=0.
+:~sposta(_,T,_,_,_). [T:2]
+:~sposta(B,T,_,_,_),B!=6. [1:1]
