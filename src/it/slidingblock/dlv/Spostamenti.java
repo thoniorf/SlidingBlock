@@ -1,5 +1,5 @@
 package it.slidingblock.dlv;
-public class Spostamenti
+public class Spostamenti implements Comparable<Spostamenti>
 {
 	public int blocco;
 	public int partenzariga;
@@ -58,7 +58,16 @@ public class Spostamenti
 	@Override
 	public String toString()
 	{
-		return "("+blocco+","+partenzariga+","+partenzacolonna+","+arrivoriga+","+arrivocolonna+","+turno+","+")";
+		return "(" + blocco + "," + partenzariga + "," + partenzacolonna + ","
+				+ arrivoriga + "," + arrivocolonna + "," + turno + ")";
 	}
-	
+	public int compareTo(Spostamenti o)
+	{
+		if (this.turno < o.turno)
+			return -1;
+		else if (this.turno > o.turno)
+			return 1;
+		else
+			return 0;
+	}
 }

@@ -11,13 +11,13 @@ public int dim, turno= 1 , key= 0 ;
 public Interface(int dim){
  this .dim=dim;
 }
-public Set<Spostamenti> compute(World w){
+public ArrayList<Spostamenti> compute(World w){
 Point exitPoint=w.getMatrix().getExitCell();
 ExitCell exit= new ExitCell(exitPoint.x,exitPoint.y);
 Set<Blocco> blocchiDLV= new HashSet<Blocco>();
 Set<BKey> bKeyDLV= new HashSet<BKey>();
 ArrayList<Block> blocchiJ=w.getBlocks();
-Set<Spostamenti> spostamenti= new HashSet<Spostamenti>();
+ArrayList<Spostamenti> spostamenti= new ArrayList<Spostamenti>();
 for(Block b:blocchiJ)
 {
 if(b instanceof KeyBlock)
@@ -107,7 +107,7 @@ _JDLV_PROGRAM_EXECUTING.addText(":- sposta(B, X, Y, X1, Y1, T), sposta(B, X, Y, 
 _JDLV_PROGRAM_EXECUTING.addText(":- not #count{B,T : sposta(B, A, C, X, Y, T), key(B), uscita(X, Y)} = 1."+'\n');
 _JDLV_PROGRAM_EXECUTING.addText(":~ turno(T). [T:1]"+'\n');
 _JDLV_PROGRAM_EXECUTING.getFiles().clear();
-_JDLV_INVOCATION_EXECUTING.addOption(" -N=50");
+_JDLV_INVOCATION_EXECUTING.addOption(" -N=7");
 _JDLV_INVOCATION_EXECUTING.setNumberOfModels(1);
 _JDLV_PROGRAM_BUFFER_EXECUTING.append("");
 _JDLV_INVOCATION_EXECUTING.setInputProgram(_JDLV_PROGRAM_EXECUTING);

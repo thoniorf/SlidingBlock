@@ -1,4 +1,5 @@
 package it.slidingblock.gui;
+import java.awt.Component;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
@@ -7,6 +8,7 @@ public class MainFrame extends JFrame
 	private static final long serialVersionUID=1L;
 	public static final int sumX=500;
 	public static final int sumY=100;
+	public GamePanel panel;
 	public MainFrame()
 	{
 		this.setSize(1366,700);
@@ -30,12 +32,17 @@ public class MainFrame extends JFrame
 	}
 	public void switchPanelPlay()
 	{
-		this.setContentPane(new GamePanel(this));
+		panel = new GamePanel(this);
+		this.setContentPane(panel);
 		this.revalidate();
 	}
 	public void switchPanelStart()
 	{
 		this.setContentPane(new StartPanel(this));
 		this.revalidate();
+	}
+	public GamePanel getGamePanel()
+	{
+		return panel;
 	}
 }

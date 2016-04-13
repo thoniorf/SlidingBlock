@@ -9,14 +9,14 @@ public class Interface{
 	{
 		this.dim=dim;
 	}
-	public Set <Spostamenti> compute(World w){
+	public ArrayList <Spostamenti> compute(World w){
 		
 		Point exitPoint=w.getMatrix().getExitCell();
 		ExitCell exit=new ExitCell(exitPoint.x,exitPoint.y);
 		Set<Blocco> blocchiDLV=new HashSet<Blocco>();
 		Set<BKey> bKeyDLV=new HashSet<BKey>();
 		ArrayList<Block> blocchiJ = w.getBlocks();
-		Set <Spostamenti> spostamenti=new HashSet<Spostamenti>();		
+		ArrayList <Spostamenti> spostamenti=new ArrayList<Spostamenti>();		
 		for (Block b: blocchiJ)
 		{
 			if (b instanceof KeyBlock)
@@ -60,7 +60,6 @@ public class Interface{
 			spostatiIN(X,Y,T1):-sposta(_,_,_,X,Y,T1).
 			spostatiDA(B,X,Y,T1):-sposta(B,X,Y,_,_,T1),not spostatiIN(X,Y,T1).
 			//////////////////////////////////////////////////////GUESS////////////////////////////////////////////////////////
-			
 			////////////////////////////////////////ITERAZIONI/////////////////////////
 			//aggiornamenti
 			contiene(B,X,Y,T):-sposta(B,_,_,X,Y,T),turno(T).
@@ -101,7 +100,7 @@ public class Interface{
 			:~turno(T).[T:1]
 			///////////////////////////////////////////CONSTRAINTS////////////////////////
 		#>
-		.(" -N=50")if_no_answerset{System.out.println("No solution");}
+		.(" -N=7")if_no_answerset{System.out.println("No solution");}
 		return spostamenti;
 	}
 }
