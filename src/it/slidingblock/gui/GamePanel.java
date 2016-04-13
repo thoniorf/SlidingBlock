@@ -3,11 +3,13 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
-import java.util.Set;
 import javax.swing.JPanel;
+import javax.swing.event.MouseInputAdapter;
+
 import it.slidingblock.core.Direction;
 import it.slidingblock.core.Matrix;
 import it.slidingblock.core.World;
@@ -19,70 +21,83 @@ public class GamePanel extends JPanel
 	private int bselected;
 	private int changeX;
 	private int changeY;
-	private ModifiedButton close;
-	private ModifiedButton comeToStart;
 	private int curX;
 	private int curY;
+	
+	private ModifiedButton close;
+	private ModifiedButton comeToStart;
 	private ModifiedButton dlv;
-	private MainFrame frame;
 	private ModifiedButton help;
+	
+	private MainFrame frame;
 	private World world;
-	public GamePanel(MainFrame frame)
+	
+	public GamePanel(final MainFrame frame)
 	{
+		super(null);
 		this.frame = frame;
 		this.world = new World();
 		this.setSize(frame.getSize());
-		this.setLayout(null);
 		this.setButtons();
 		this.bselected = -1;
-		this.addMouseMotionListener(new MouseMotionListener()
+		this.setFocusable(true);
+		this.addMouseListener(new MouseAdapter()
 		{
-			public void mouseDragged(MouseEvent e)
-			{
-				blockSelected();
-				dragged(e);
-				bselected = -1;
-				repaint();
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				int actualwidth = world.getMatrix().getWidth()* Matrix.cellsize;
+				int actualheight = world.getMatrix().getHeight()* Matrix.cellsize;
+				
+				changeX = e.getX() - MainFrame.sumX - Matrix.cellsize;
+				changeY = e.getY() - MainFrame.sumY - Matrix.cellsize;
+				
+				if (( changeX> 0 && changeX < actualwidth ) && (changeY > 0 && changeY < actualheight))
+				{
+					changeX /= Matrix.cellsize;
+					changeY /= Matrix.cellsize;
+					dragged();
+					repaint();
+				}
 			}
-			public void mouseMoved(MouseEvent e)
-			{
+			@Override
+			public void mousePressed(MouseEvent e) {
+				int actualwidth = world.getMatrix().getWidth()* Matrix.cellsize;
+				int actualheight = world.getMatrix().getHeight()* Matrix.cellsize;
+				
 				curX = e.getX() - MainFrame.sumX - Matrix.cellsize;
 				curY = e.getY() - MainFrame.sumY - Matrix.cellsize;
+				
+				if (( curX> 0 && curX < actualwidth ) && (curY > 0 && curY < actualheight))
+				{
+					curX /= Matrix.cellsize;
+					curY /= Matrix.cellsize;
+					bselected = world.getMatrix().getCell(curY, curX);
+				}
+				
 			}
 		});
+		this.setVisible(true);
 	}
-	private void blockSelected()
-	{
-		if ((curX > 0 && curX < (world.getMatrix().getWidth())
-				* Matrix.cellsize)
-				&& (curY > 0 && curY < (world.getMatrix().getHeight())
-						* Matrix.cellsize))
-		{
-			changeX = curX;
-			changeY = curY;
-			curX /= 50;
-			curY /= 50;
-			bselected = world.getMatrix().getCell(curY, curX);
-		}
-	}
-	private void dragged(MouseEvent e)
+	private void dragged()
 	{
 		if (bselected > 0)
 		{
-			int moveY = e.getY() - MainFrame.sumY - Matrix.cellsize;
-			int moveX = e.getX() - MainFrame.sumX - Matrix.cellsize;
-			if (Math.abs(moveY - changeY) > Math.abs(moveX - changeX))
+			int dirX = changeX-curX;
+			int dirY = changeY-curY;
+			if (dirY !=0 && dirX == 0)
 			{
-				if (changeY < e.getY() - MainFrame.sumY - Matrix.cellsize)
+				if (dirY==1)
 					world.getMatrix().move(bselected, Direction.DOWN);
-				else if (changeY > e.getY() - MainFrame.sumY - Matrix.cellsize)
+				else 
 					world.getMatrix().move(bselected, Direction.UP);
-			} else
+			} else if (dirX !=0 && dirY == 0)
 			{
-				if (changeX > e.getX() - MainFrame.sumX - Matrix.cellsize)
+				if (dirX ==-1)
 					world.getMatrix().move(bselected, Direction.LEFT);
-				else if (changeX < e.getX() - MainFrame.sumX - Matrix.cellsize)
+				else
 					world.getMatrix().move(bselected, Direction.RIGHT);
+			} else {
+				return;
 			}
 		}
 	}
