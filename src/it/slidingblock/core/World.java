@@ -10,7 +10,7 @@ public class World
 	private Matrix matrix;
 	public World()
 	{
-		blocks=new ArrayList<>();
+		blocks=new ArrayList<Block>();
 		makeLevel();
 	}
 	public ArrayList<Block> getBlocks()
@@ -23,7 +23,8 @@ public class World
 	}
 	public void makeLevel()
 	{
-		matrix=new Matrix(3,3,1);
+		Point exit=new Point(2,0);
+		matrix=new Matrix(3,3,exit,1);
 		// other block
 		for (int i=1;i<7;i++)
 			blocks.add(new Block(i,1,1));

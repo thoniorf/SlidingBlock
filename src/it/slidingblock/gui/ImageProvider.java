@@ -6,7 +6,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 public class ImageProvider
 {
-	private static HashMap<String,Image> blocks=new HashMap<>();
+	private static HashMap<String,Image> blocks=new HashMap<String,Image>();
 	private static ImageIcon close1;
 	private static ImageIcon close2;
 	private static ImageIcon closePlayPanel1;
@@ -60,10 +60,6 @@ public class ImageProvider
 		{
 			System.out.println("Cannot read Image");
 		}
-	}
-	private static void loadBlocks(String block) throws IOException
-	{
-		blocks.put(block,ImageIO.read(ImageProvider.class.getClassLoader().getResource("it/slidingblock/assets/"+block+".png")));
 	}
 	public static HashMap<String,Image> getBlocks()
 	{
@@ -140,5 +136,9 @@ public class ImageProvider
 	public static ImageIcon getYes2()
 	{
 		return yes2;
+	}
+	private static void loadBlocks(String block) throws IOException
+	{
+		blocks.put(block,ImageIO.read(ImageProvider.class.getClassLoader().getResource("it/slidingblock/assets/"+block+".png")));
 	}
 }

@@ -1,6 +1,5 @@
 package it.slidingblock.gui;
 import java.awt.Dimension;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.Icon;
@@ -8,10 +7,10 @@ import javax.swing.JButton;
 public class ModifiedButton extends JButton
 {
 	private static final long serialVersionUID=1;
-	private MouseAdapter passOn;
 	int differenceHeight;
 	int differenceWidth;
-	public ModifiedButton(Icon icon1,Icon icon2,ActionListener a)
+	private MouseAdapter passOn;
+	public ModifiedButton(final Icon icon1,final Icon icon2)
 	{
 		super(icon1);
 		differenceWidth=(icon2.getIconWidth()-icon1.getIconWidth())/2;
@@ -31,7 +30,6 @@ public class ModifiedButton extends JButton
 				setIcon(icon1);
 			}
 		};
-		this.addActionListener(a);
 		this.setSize(new Dimension(icon1.getIconWidth(),icon1.getIconHeight()));
 		this.setContentAreaFilled(false);
 		this.setOpaque(false);

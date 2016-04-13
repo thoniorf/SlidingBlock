@@ -1,6 +1,8 @@
 package it.slidingblock.gui;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -33,9 +35,23 @@ public class RequestPanel extends JPanel
 		}
 		this.write.setForeground(Color.WHITE);
 		this.write.setHorizontalAlignment((int) CENTER_ALIGNMENT);
-		this.noButton=new ModifiedButton(ImageProvider.getNo1(),ImageProvider.getNo2(),e -> dialog.dispose());
+		this.noButton=new ModifiedButton(ImageProvider.getNo1(),ImageProvider.getNo2());
+		this.noButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				dialog.dispose();
+			}
+		});
 		this.noButton.setBounds(((int) (this.getWidth()*0.7)-noButton.getWidth()),(int) (this.getHeight()*0.6),noButton.getWidth(),noButton.getHeight());
-		this.yesButton=new ModifiedButton(ImageProvider.getYes1(),ImageProvider.getYes2(),e -> System.exit(0));
+		this.yesButton=new ModifiedButton(ImageProvider.getYes1(),ImageProvider.getYes2());
+		this.yesButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				System.exit(0);
+			}
+		});
 		this.yesButton.setBounds((int) (this.getWidth()*0.3),(int) (this.getHeight()*0.6),yesButton.getWidth(),yesButton.getHeight());
 		this.add(this.write);
 		this.add(this.noButton);

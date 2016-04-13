@@ -1,24 +1,29 @@
 package it.slidingblock.gui;
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
+import java.util.Set;
 import javax.swing.JPanel;
 import it.slidingblock.core.Direction;
 import it.slidingblock.core.Matrix;
 import it.slidingblock.core.World;
+import it.slidingblock.dlv.Interface;
+import it.slidingblock.dlv.Spostamenti;
 public class GamePanel extends JPanel
 {
 	private static final long serialVersionUID=1L;
 	private int bselected;
 	private int changeX;
 	private int changeY;
-	private int curX;
-	private int curY;
 	private ModifiedButton close;
 	private ModifiedButton comeToStart;
+	private int curX;
+	private int curY;
 	private ModifiedButton dlv;
-	private ModifiedButton help;
 	private MainFrame frame;
+	private ModifiedButton help;
 	private World world;
 	public GamePanel(MainFrame frame)
 	{
@@ -30,7 +35,6 @@ public class GamePanel extends JPanel
 		this.bselected=-1;
 		this.addMouseMotionListener(new MouseMotionListener()
 		{
-			@Override
 			public void mouseDragged(MouseEvent e)
 			{
 				blockSelected();
@@ -38,7 +42,6 @@ public class GamePanel extends JPanel
 				bselected=-1;
 				repaint();
 			}
-			@Override
 			public void mouseMoved(MouseEvent e)
 			{
 				curX=e.getX()-MainFrame.sumX-Matrix.cellsize;
@@ -79,26 +82,49 @@ public class GamePanel extends JPanel
 			}
 		}
 	}
-	private void setButtons()
-	{
-		this.dlv=new ModifiedButton(ImageProvider.getDlv1(),ImageProvider.getDlv2(),null);
-		this.dlv.setBounds((int) (this.getWidth()*0.8),(int) (this.getHeight()*0.15),dlv.getWidth(),dlv.getHeight());
-		this.help=new ModifiedButton(ImageProvider.getHelp1(),ImageProvider.getHelp2(),null);
-		this.help.setBounds((int) (this.getWidth()*0.8),(int) (this.getHeight()*0.35),help.getWidth(),help.getHeight());
-		this.comeToStart=new ModifiedButton(ImageProvider.getCome1(),ImageProvider.getCome2(),e -> frame.switchPanelStart());
-		this.comeToStart.setBounds((int) (this.getWidth()*0.05),(int) (this.getHeight()*0.65),comeToStart.getWidth(),comeToStart.getHeight());
-		this.close=new ModifiedButton(ImageProvider.getClosePlayPanel1(),ImageProvider.getClosePlayPanel2(),e -> frame.confirmExit());
-		this.close.setBounds((int) (this.getWidth()*0.05),(int) (this.getHeight()*0.80),close.getWidth(),close.getHeight());
-		this.add(dlv);
-		this.add(help);
-		this.add(comeToStart);
-		this.add(close);
-	}
 	@Override
 	protected void paintComponent(Graphics g)
 	{
 		super.paintComponent(g);
 		g.drawImage(ImageProvider.getGamePanel(),0,0,this.getWidth(),this.getHeight(),null);
 		world.paint(g);
+	}
+	private void setButtons()
+	{
+		this.dlv=new ModifiedButton(ImageProvider.getDlv1(),ImageProvider.getDlv2());
+		this.dlv.setBounds((int) (this.getWidth()*0.8),(int) (this.getHeight()*0.15),dlv.getWidth(),dlv.getHeight());
+		this.dlv.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				Interface dlv=new Interface(world.getMatrix().getWidth());
+				Set<Spostamenti> spostamenti=dlv.compute(world);
+				System.out.println(spostamenti.toString());
+			}
+		});
+		this.help=new ModifiedButton(ImageProvider.getHelp1(),ImageProvider.getHelp2());
+		this.help.setBounds((int) (this.getWidth()*0.8),(int) (this.getHeight()*0.35),help.getWidth(),help.getHeight());
+		this.comeToStart=new ModifiedButton(ImageProvider.getCome1(),ImageProvider.getCome2());
+		this.comeToStart.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				frame.switchPanelStart();
+			}
+		});
+		this.comeToStart.setBounds((int) (this.getWidth()*0.05),(int) (this.getHeight()*0.65),comeToStart.getWidth(),comeToStart.getHeight());
+		this.close=new ModifiedButton(ImageProvider.getClosePlayPanel1(),ImageProvider.getClosePlayPanel2());
+		this.close.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				frame.confirmExit();
+			}
+		});
+		this.close.setBounds((int) (this.getWidth()*0.05),(int) (this.getHeight()*0.80),close.getWidth(),close.getHeight());
+		this.add(dlv);
+		this.add(help);
+		this.add(comeToStart);
+		this.add(close);
 	}
 }

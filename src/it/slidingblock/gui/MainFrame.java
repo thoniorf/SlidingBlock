@@ -11,7 +11,6 @@ public class MainFrame extends JFrame
 	{
 		this.setSize(1366,700);
 		this.setUndecorated(false);
-		// this.setLocationRelativeTo(null);
 		this.setTitle("Sliding Block");
 		this.setDefaultCloseOperation(0);
 		this.addWindowListener(new WindowAdapter()
