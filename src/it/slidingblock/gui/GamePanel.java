@@ -121,7 +121,7 @@ public class GamePanel extends JPanel
 			public void actionPerformed(ActionEvent e)
 			{
 				Interface dlv = new Interface(world.getMatrix().getWidth());
-				ArrayList<Spostamenti> spostamenti = dlv.compute(world);
+				ArrayList<Spostamenti> spostamenti = dlv.compute(world,5);
 				spostamenti.sort(null);
 				for (Spostamenti s : spostamenti)
 				{
@@ -154,7 +154,7 @@ public class GamePanel extends JPanel
 			public void actionPerformed(ActionEvent e)
 			{
 				Interface dlv = new Interface(world.getMatrix().getWidth());
-				ArrayList<Spostamenti> spostamenti = dlv.compute(world);
+				ArrayList<Spostamenti> spostamenti = dlv.compute(world,5);
 				spostamenti.sort(null);
 				int diffX = spostamenti.get(0).arrivoriga
 						- spostamenti.get(0).partenzariga;

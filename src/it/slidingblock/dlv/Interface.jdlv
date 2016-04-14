@@ -9,8 +9,7 @@ public class Interface{
 	{
 		this.dim=dim;
 	}
-	public ArrayList <Spostamenti> compute(World w){
-		
+	public ArrayList <Spostamenti> compute(World w,int max){
 		Point exitPoint=w.getMatrix().getExitCell();
 		ExitCell exit=new ExitCell(exitPoint.x,exitPoint.y);
 		Set<Blocco> blocchiDLV=new HashSet<Blocco>();
@@ -27,14 +26,24 @@ public class Interface{
 			for (Point p:temp)
 				blocchiDLV.add(new Blocco(b.getId(),p.x,p.y));
 		}
-		<#
+		for(int i = 1; i < max; i++){
+		<#+(Solver)
+			turno(${i}).
+		#>
+		}
+		<#(Solver)
 			//input e output per java
 			in=dim::dim,key::key,turno::turno,blocchiDLV::blocco,bKeyDLV::bKey,exit::uscita;
 			out=spostamenti::sposta;
 			FILE="./solver.txt";
 		#>
-		.("-n=1 , -N=7")
-		if_no_answerset{System.out.println("No solution");}
-			return spostamenti;
+		.("-n=1, -N=50")
+		if_no_answerset
+		{
+			if(max<50){
+				spostamenti = compute(w,max+1);
+			}
+		}
+		return spostamenti;
 	}
 }
