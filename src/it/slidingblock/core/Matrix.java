@@ -17,9 +17,9 @@ public class Matrix
 	{
 		return exitCell;
 	}
-	public Matrix(int width, int height, Point exitCell,int exitSize)
+	public Matrix(int width, int height, Point exitCell, int exitSize)
 	{
-		this.exitSize=exitSize;
+		this.exitSize = exitSize;
 		this.width = width;
 		this.height = height;
 		this.exitCell = exitCell;
@@ -104,9 +104,9 @@ public class Matrix
 	}
 	public boolean insert(Block b, Point o)
 	{
-		for (int i = o.y; i < o.y + b.getHeigth(); i++)
+		for (int i = o.y; i < o.y + b.getWidth(); i++)
 		{
-			for (int j = o.x; j < o.x + b.getWidth(); j++)
+			for (int j = o.x; j < o.x + b.getHeigth(); j++)
 			{
 				if (matrix[j][i] != 0)
 				{

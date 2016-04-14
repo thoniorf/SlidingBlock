@@ -6,7 +6,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 public class ImageProvider
 {
-	private static HashMap<String,Image> blocks=new HashMap<String,Image>();
+	private static HashMap<String, Image> blocks = new HashMap<String, Image>();
 	private static ImageIcon close1;
 	private static ImageIcon close2;
 	private static ImageIcon closePlayPanel1;
@@ -15,6 +15,8 @@ public class ImageProvider
 	private static ImageIcon come2;
 	private static ImageIcon dlv1;
 	private static ImageIcon dlv2;
+	private static ImageIcon ok2;
+	private static ImageIcon ok1;
 	private static Image gamePanel;
 	private static ImageIcon help1;
 	private static ImageIcon help2;
@@ -29,39 +31,86 @@ public class ImageProvider
 	{
 		try
 		{
-			startPanel=ImageIO.read(ImageProvider.class.getClassLoader().getResource("it/slidingblock/assets/startPanel.png"));
-			gamePanel=ImageIO.read(ImageProvider.class.getClassLoader().getResource("it/slidingblock/assets/gamePanel.png"));
-			play1=new ImageIcon(ImageIO.read(ImageProvider.class.getClassLoader().getResource("it/slidingblock/assets/play1.png")));
-			play2=new ImageIcon(ImageIO.read(ImageProvider.class.getClassLoader().getResource("it/slidingblock/assets/play2.png")));
-			close1=new ImageIcon(ImageIO.read(ImageProvider.class.getClassLoader().getResource("it/slidingblock/assets/close1.png")));
-			close2=new ImageIcon(ImageIO.read(ImageProvider.class.getClassLoader().getResource("it/slidingblock/assets/close2.png")));
-			come1=new ImageIcon(ImageIO.read(ImageProvider.class.getClassLoader().getResource("it/slidingblock/assets/come1.png")));
-			come2=new ImageIcon(ImageIO.read(ImageProvider.class.getClassLoader().getResource("it/slidingblock/assets/come2.png")));
-			help1=new ImageIcon(ImageIO.read(ImageProvider.class.getClassLoader().getResource("it/slidingblock/assets/help1.png")));
-			help2=new ImageIcon(ImageIO.read(ImageProvider.class.getClassLoader().getResource("it/slidingblock/assets/help2.png")));
-			dlv1=new ImageIcon(ImageIO.read(ImageProvider.class.getClassLoader().getResource("it/slidingblock/assets/dlv1.png")));
-			dlv2=new ImageIcon(ImageIO.read(ImageProvider.class.getClassLoader().getResource("it/slidingblock/assets/dlv2.png")));
-			yes1=new ImageIcon(ImageIO.read(ImageProvider.class.getClassLoader().getResource("it/slidingblock/assets/yes1.png")));
-			yes2=new ImageIcon(ImageIO.read(ImageProvider.class.getClassLoader().getResource("it/slidingblock/assets/yes2.png")));
-			no1=new ImageIcon(ImageIO.read(ImageProvider.class.getClassLoader().getResource("it/slidingblock/assets/no1.png")));
-			no2=new ImageIcon(ImageIO.read(ImageProvider.class.getClassLoader().getResource("it/slidingblock/assets/no2.png")));
-			closePlayPanel1=new ImageIcon(ImageIO.read(ImageProvider.class.getClassLoader().getResource("it/slidingblock/assets/closePlayPanel1.png")));
-			closePlayPanel2=new ImageIcon(ImageIO.read(ImageProvider.class.getClassLoader().getResource("it/slidingblock/assets/closePlayPanel2.png")));
-			for (int a=1;a<3;a++)
+			startPanel = ImageIO.read(ImageProvider.class.getClassLoader()
+					.getResource("it/slidingblock/assets/startPanel.png"));
+			gamePanel = ImageIO.read(ImageProvider.class.getClassLoader()
+					.getResource("it/slidingblock/assets/gamePanel.png"));
+			play1 = new ImageIcon(ImageIO.read(ImageProvider.class
+					.getClassLoader().getResource(
+							"it/slidingblock/assets/play1.png")));
+			play2 = new ImageIcon(ImageIO.read(ImageProvider.class
+					.getClassLoader().getResource(
+							"it/slidingblock/assets/play2.png")));
+			close1 = new ImageIcon(ImageIO.read(ImageProvider.class
+					.getClassLoader().getResource(
+							"it/slidingblock/assets/close1.png")));
+			close2 = new ImageIcon(ImageIO.read(ImageProvider.class
+					.getClassLoader().getResource(
+							"it/slidingblock/assets/close2.png")));
+			come1 = new ImageIcon(ImageIO.read(ImageProvider.class
+					.getClassLoader().getResource(
+							"it/slidingblock/assets/come1.png")));
+			come2 = new ImageIcon(ImageIO.read(ImageProvider.class
+					.getClassLoader().getResource(
+							"it/slidingblock/assets/come2.png")));
+			help1 = new ImageIcon(ImageIO.read(ImageProvider.class
+					.getClassLoader().getResource(
+							"it/slidingblock/assets/help1.png")));
+			help2 = new ImageIcon(ImageIO.read(ImageProvider.class
+					.getClassLoader().getResource(
+							"it/slidingblock/assets/help2.png")));
+			dlv1 = new ImageIcon(ImageIO.read(ImageProvider.class
+					.getClassLoader().getResource(
+							"it/slidingblock/assets/dlv1.png")));
+			dlv2 = new ImageIcon(ImageIO.read(ImageProvider.class
+					.getClassLoader().getResource(
+							"it/slidingblock/assets/dlv2.png")));
+			ok1 = new ImageIcon(ImageIO.read(ImageProvider.class
+					.getClassLoader().getResource(
+							"it/slidingblock/assets/ok1.png")));
+			ok2 = new ImageIcon(ImageIO.read(ImageProvider.class
+					.getClassLoader().getResource(
+							"it/slidingblock/assets/ok2.png")));
+			yes1 = new ImageIcon(ImageIO.read(ImageProvider.class
+					.getClassLoader().getResource(
+							"it/slidingblock/assets/yes1.png")));
+			yes2 = new ImageIcon(ImageIO.read(ImageProvider.class
+					.getClassLoader().getResource(
+							"it/slidingblock/assets/yes2.png")));
+			no1 = new ImageIcon(ImageIO.read(ImageProvider.class
+					.getClassLoader().getResource(
+							"it/slidingblock/assets/no1.png")));
+			no2 = new ImageIcon(ImageIO.read(ImageProvider.class
+					.getClassLoader().getResource(
+							"it/slidingblock/assets/no2.png")));
+			closePlayPanel1 = new ImageIcon(ImageIO.read(ImageProvider.class
+					.getClassLoader().getResource(
+							"it/slidingblock/assets/closePlayPanel1.png")));
+			closePlayPanel2 = new ImageIcon(ImageIO.read(ImageProvider.class
+					.getClassLoader().getResource(
+							"it/slidingblock/assets/closePlayPanel2.png")));
+			for (int a = 1; a < 3; a++)
 			{
-				for (int b=1;b<3;b++)
+				for (int b = 1; b < 3; b++)
 				{
-					loadBlocks("redBlock"+a+"x"+b);
-					loadBlocks("yellowBlock"+a+"x"+b);
+					loadBlocks("redBlock" + a + "x" + b);
+					loadBlocks("yellowBlock" + a + "x" + b);
 				}
 			}
-		}
-		catch (final IOException e)
+		} catch (final IOException e)
 		{
 			System.out.println("Cannot read Image");
 		}
 	}
-	public static HashMap<String,Image> getBlocks()
+	public static ImageIcon getOk2()
+	{
+		return ok2;
+	}
+	public static ImageIcon getOk1()
+	{
+		return ok1;
+	}
+	public static HashMap<String, Image> getBlocks()
 	{
 		return blocks;
 	}
@@ -139,6 +188,9 @@ public class ImageProvider
 	}
 	private static void loadBlocks(String block) throws IOException
 	{
-		blocks.put(block,ImageIO.read(ImageProvider.class.getClassLoader().getResource("it/slidingblock/assets/"+block+".png")));
+		blocks.put(
+				block,
+				ImageIO.read(ImageProvider.class.getClassLoader().getResource(
+						"it/slidingblock/assets/" + block + ".png")));
 	}
 }

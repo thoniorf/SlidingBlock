@@ -31,7 +31,7 @@ public class Interface{
 			turno(${i}).
 		#>
 		}
-		<#(Solver)
+		<#
 			//input e output per java
 			in=dim::dim,key::key,turno::turno,blocchiDLV::blocco,bKeyDLV::bKey,exit::uscita;
 			out=spostamenti::sposta;

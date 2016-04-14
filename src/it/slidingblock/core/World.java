@@ -26,7 +26,7 @@ public class World
 		Point exit=new Point(2,0);
 		matrix=new Matrix(3,3,exit,1);
 		// other block
-		for (int i=1;i<7;i++)
+		for (int i=1;i<6;i++)
 			blocks.add(new Block(i,1,1));
 		// insert
 		matrix.insert(blocks.get(0),new Point(0,0));
@@ -34,10 +34,9 @@ public class World
 		matrix.insert(blocks.get(2),new Point(1,2));
 		matrix.insert(blocks.get(3),new Point(2,1));
 		matrix.insert(blocks.get(4),new Point(2,2));
-		matrix.insert(blocks.get(5),new Point(0,2));
 		// key block
-		blocks.add(new KeyBlock(7,1,1));
-		matrix.insert(blocks.get(6),new Point(0,1));
+		blocks.add(new KeyBlock(6,2,1));
+		matrix.insert(blocks.get(5),new Point(0,1));
 	}
 	public void paint(Graphics g)
 	{

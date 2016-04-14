@@ -33,8 +33,16 @@ public class RequestPanel extends JPanel
 			this.write.setFont(new Font("Showcard Gothic",0,(int) (this.dialog.getHeight()*0.17)));
 			this.write.setBounds(5,15,this.getWidth(),25);
 		}
+		if(i==2)
+		{
+			this.write.setText("NO MOVE POSSIBLE");
+			this.write.setFont(new Font("Showcard Gothic",0,(int) (this.dialog.getHeight()*0.17)));
+			this.write.setBounds(5,15,this.getWidth(),25);
+		}	
 		this.write.setForeground(Color.WHITE);
 		this.write.setHorizontalAlignment((int) CENTER_ALIGNMENT);
+		if(i==1)
+		{
 		this.noButton=new ModifiedButton(ImageProvider.getNo1(),ImageProvider.getNo2());
 		this.noButton.addActionListener(new ActionListener()
 		{
@@ -53,9 +61,23 @@ public class RequestPanel extends JPanel
 			}
 		});
 		this.yesButton.setBounds((int) (this.getWidth()*0.3),(int) (this.getHeight()*0.6),yesButton.getWidth(),yesButton.getHeight());
-		this.add(this.write);
 		this.add(this.noButton);
 		this.add(this.yesButton);
+		}
+		else if(i==2)
+		{
+			this.noButton=new ModifiedButton(ImageProvider.getOk1(),ImageProvider.getOk2());
+			this.noButton.addActionListener(new ActionListener()
+			{
+				public void actionPerformed(ActionEvent e)
+				{
+					dialog.dispose();
+				}
+			});
+			this.noButton.setBounds(((int) (this.getWidth()/2)-(noButton.getWidth()/2)),(int) (this.getHeight()*0.6),noButton.getWidth(),noButton.getHeight());
+			this.add(noButton);
+		}
+		this.add(this.write);
 		this.dialog.setUndecorated(true);
 		this.dialog.setContentPane(this);
 		this.dialog.setLocationRelativeTo(this.frame);
