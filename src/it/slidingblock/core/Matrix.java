@@ -1,8 +1,11 @@
 package it.slidingblock.core;
+import it.slidingblock.dlv.*;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import it.slidingblock.core.block.Block;
 import it.slidingblock.gui.MainFrame;
 public class Matrix
@@ -13,6 +16,12 @@ public class Matrix
 	private int height;
 	private int[][] matrix;
 	private int width;
+	private Set<Adiacenze> right = new HashSet<Adiacenze>();
+	private Set<Adiacenze> up = new HashSet<Adiacenze>();
+	private Set<Adiacenze> down = new HashSet<Adiacenze>();
+	private Set<Adiacenze> left = new HashSet<Adiacenze>();
+	private Set<Adiacenze> adiacenze = new HashSet<Adiacenze>();
+	private Set<Diversa> diverse = new HashSet<Diversa>();
 	public Point getExitCell()
 	{
 		return exitCell;
@@ -23,10 +32,87 @@ public class Matrix
 		this.width = width;
 		this.height = height;
 		this.exitCell = exitCell;
-		this.matrix = new int[width][height];
+		this.matrix = new int[width][height];	
 		for (int i = 0; i < height; i++)
 			for (int j = 0; j < width; j++)
-				matrix[i][j] = 0;
+				for (int a = 0; a < height; a++)
+					for (int b = 0; b < width; b++)
+						if(i!=a||j!=b)
+							diverse.add(new Diversa(i, j, a, b));
+		for (int i = 0; i < width; i++)
+			for (int j = 0; j < height; j++)
+			{
+				if ((i + 1) < width)
+				{
+					down.add(new Adiacenze(i, j, i + 1, j));
+					adiacenze.add(new Adiacenze(i, j, i + 1, j));
+				}
+				if ((i - 1) >= 0)
+				{
+					up.add(new Adiacenze(i, j, i - 1, j));
+					adiacenze.add(new Adiacenze(i, j, i - 1, j));
+				}
+				if ((j + 1) < height)
+				{
+					right.add(new Adiacenze(i, j, i, j + 1));
+					adiacenze.add(new Adiacenze(i, j, i, j + 1));
+				}
+				if ((j - 1) >= 0)
+				{
+					left.add(new Adiacenze(i, j, i, j - 1));
+					adiacenze.add(new Adiacenze(i, j, i, j - 1));
+				}
+			}
+	}
+	public Set<Diversa> getDiverse()
+	{
+		return diverse;
+	}
+	public Set<TotBlockCol> getTotBlockCol(ArrayList<Block> block)
+	{
+		Set<TotBlockCol> totBlockCol = new HashSet<TotBlockCol>();
+		for (Block b : block)
+		{
+			int cont = 0;
+			for (int i = 0; i < width; i++)
+				for (int j = 0; j < height; j++)
+				{
+					if (matrix[i][j] == b.getId())
+						cont++;
+				}
+			totBlockCol.add(new TotBlockCol(b.getId(), cont));
+		}
+		return totBlockCol;
+	}
+	public Set<Contiene> getCelle()
+	{
+		Set<Contiene> celle = new HashSet<Contiene>();
+		for (int i = 0; i < width; i++)
+			for (int j = 0; j < height; j++)
+			{
+				celle.add(new Contiene(matrix[i][j], i, j, 0));
+			}
+		return celle;
+	}
+	public Set<Adiacenze> getRight()
+	{
+		return right;
+	}
+	public Set<Adiacenze> getUp()
+	{
+		return up;
+	}
+	public Set<Adiacenze> getDown()
+	{
+		return down;
+	}
+	public Set<Adiacenze> getLeft()
+	{
+		return left;
+	}
+	public Set<Adiacenze> getAdiacenze()
+	{
+		return adiacenze;
 	}
 	private boolean canMove(ArrayList<Point> temp, Direction d, int id)
 	{

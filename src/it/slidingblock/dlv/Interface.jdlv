@@ -1,81 +1,61 @@
 package it.slidingblock.dlv;
 import java.util.*;
-import it.slidingblock.combinazioni.*;
 import it.slidingblock.core.*;
 import it.slidingblock.core.block.*;
 import java.awt.*;
 public class Interface{
-	public int dim,key=0;
-	public Interface(int dim)
+	public int key;
+	public Interface()
 	{
-		this.dim=dim;
+		key=0;
 	}
-	public ArrayList <SpostamentiC> compute(World w,int max){
-		long start = System.currentTimeMillis();
-		ArrayList<Point> cell = new ArrayList<Point>();
-		for(int i = 0; i < dim; i++){
-			for(int j = 0; j < dim; j++){
-				cell.add(new Point(i,j));
-			}
-		}
-		Set<Adiacenze> adiacenze = new HashSet<Adiacenze>();
-		for(int i = 0; i < cell.size(); i++){
-			for(int j = 0; j < cell.size(); j++){
-				if(i!=j)
-				{
-					int rowI= cell.get(i).y;
-					int colI= cell.get(i).x;
-					int rowJ= cell.get(j).y;
-					int colJ= cell.get(j).x;
-					if(rowI == rowJ+1 && rowJ<dim){
-						adiacenze.add(new Adiacenze(colI,rowI,colJ,rowJ));
-						adiacenze.add(new Adiacenze(colJ,rowJ,colI,rowI));
-					}else if(colI == colJ+1 && colJ<dim){
-						adiacenze.add(new Adiacenze(colI,rowI,colJ,rowJ));
-						adiacenze.add(new Adiacenze(colJ,rowJ,colI,rowI));
-					}
-				}
-			}
-		}
+	public ArrayList <Spostamenti> compute(World w){
+		long begin=System.currentTimeMillis();
+		int maxint=6;
 		Point exitPoint=w.getMatrix().getExitCell();
-		ExitCell exit= new ExitCell(exitPoint.y,exitPoint.x);
-		ArrayList<Block> blocchiJava=w.getBlocks();
-		Set<Blocco> blocchiDLV= new HashSet<Blocco>();
-		Set<Dimensione> blocchiDim= new HashSet<Dimensione>();
-		Set<Pivot> pivot= new HashSet<Pivot>();
-		Set<Contiene> contiene= new HashSet<Contiene>();
-		Set<Integer> turni = new HashSet<Integer>();
-		ArrayList<SpostamentiC> spostamenti= new ArrayList<SpostamentiC>();
-		for(Block b:blocchiJava)
+		ExitCell exit=new ExitCell(exitPoint.x,exitPoint.y);
+		Set<Blocco> blocchiDLV=new HashSet<Blocco>();
+		Set<BKey> bKeyDLV=new HashSet<BKey>();
+		ArrayList<Block> blocchiJ = w.getBlocks();
+		Set<PosSposSu> posSposSu=new HashSet<PosSposSu>(); 
+		ArrayList <Spostamenti> spostamenti=new ArrayList<Spostamenti>();	
+		for (Block b: blocchiJ)
 		{
-			blocchiDLV.add(new Blocco(b.getId(),b.getWidth(),b.getHeigth()));
-			blocchiDim.add(new Dimensione(b.getId(),b.getWidth()*b.getHeigth()));
-			Point first=w.getMatrix().getFirstPoint(b.getId());
-			pivot.add(new Pivot(b.getId(),0,first.x,first.y));
-			for(Point p :w.getMatrix().getPosition(b.getId())){
-				contiene.add(new Contiene(p.y,p.x,b.getId(),0));
-			}
-			if(b instanceof KeyBlock)
+			posSposSu.add(new PosSposSu(b.getId(),b.getId()));
+			posSposSu.add(new PosSposSu(b.getId(),0));
+			if (b instanceof KeyBlock)
 				key=b.getId();
+			Point bk=w.getMatrix().getFirstPoint(b.getId());
+			bKeyDLV.add(new BKey(b.getId(),bk.y,bk.x,0));
+			ArrayList<Point> temp=w.getMatrix().getPosition(b.getId());
+			for (Point p:temp)
+				blocchiDLV.add(new Blocco(b.getId(),p.x,p.y));
+				
 		}
-		
-		for(int i = 1; i < max; i++){
-			turni.add(i);
-		}
-		
+		Point keyPoint=w.getMatrix().getFirstPoint(key);
+		if (keyPoint.y==exit.x&&keyPoint.x==exit.y)
+			return spostamenti;
+		resolve(spostamenti,key,w.getMatrix().getDiverse(),posSposSu,w.getMatrix().getTotBlockCol(w.getBlocks()),w.getMatrix().getCelle(),blocchiDLV,bKeyDLV,exit,maxint,w.getMatrix().getUp(),w.getMatrix().getLeft(),w.getMatrix().getRight(),w.getMatrix().getDown(),w.getMatrix().getAdiacenze());
+		System.out.println("Tempo impiegato: "+(System.currentTimeMillis()-begin)+" millisecondi");
+		System.out.println("Tempo impiegato: "+(System.currentTimeMillis()-begin)/1000+" secondi");
+		System.out.println("Tempo impiegato: "+((System.currentTimeMillis()-begin)/1000)/60+" minuti");
+		return spostamenti;
+	}
+	public void resolve(ArrayList <Spostamenti> spostamenti,int key,Set <Diversa> diversa,Set <PosSposSu> posSposSu,Set <TotBlockCol> totBlockCol,Set <Contiene> contiene,Set<Blocco> blocchiDLV,Set<BKey> bKeyDLV,ExitCell exit,int maxint,Set<Adiacenze> up,Set<Adiacenze>left,Set<Adiacenze>right,Set<Adiacenze>down,Set<Adiacenze>adiacenze)
+	{
 		<#
 			//input e output per java
-			in=adiacenze::adiacente,turni::turno,key::key,blocchiDLV::blocco,blocchiDim::dim,pivot::pivot,contiene::contiene,exit::exit;
+			in=key::key,diversa::diversa,contiene::contiene,posSposSu::posSpostSu,totBlockCol::totBlockCol,blocchiDLV::blocco,bKeyDLV::bKey,exit::uscita,right::right,left::left,up::up,down::down,adiacenze::adiacente;
 			out=spostamenti::sposta;
-			FILE="./combinazioni.dlv";
+			FILE="./solver.txt";
 		#>
-		.("-n=1, -N=")
+		.("-n=1")
 		if_no_answerset
 		{
-			System.out.println("Niente");
-			spostamenti = compute(w,max+1);
+			//_JDLV_INVOCATION_EXECUTING.addOption("-n=1, -N="+maxint);
+			if (maxint<35)
+			maxint+=3;
+			resolve(spostamenti,key,diversa,posSposSu,totBlockCol,contiene,blocchiDLV,bKeyDLV,exit,maxint,up,left,right,down,adiacenze);
 		}
-		System.out.println("Tempo: "+ (int)(System.currentTimeMillis() - start));
-		return spostamenti;
 	}
 }
