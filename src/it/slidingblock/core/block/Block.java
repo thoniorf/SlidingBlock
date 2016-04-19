@@ -1,35 +1,37 @@
 package it.slidingblock.core.block;
+
 import java.awt.Graphics;
 import java.awt.Point;
+
 import it.slidingblock.core.Matrix;
 import it.slidingblock.gui.ImageProvider;
 import it.slidingblock.gui.MainFrame;
-public class Block
-{
+
+public class Block {
 	private int heigth;
 	private int id;
 	private int width;
-	public Block(int id,int width,int heigth)
-	{
-		this.id=id;
-		this.width=width;
-		this.heigth=heigth;
+
+	public Block(int id, int width, int heigth) {
+		this.id = id;
+		this.width = width;
+		this.heigth = heigth;
 	}
-	public int getHeigth()
-	{
+
+	public int getHeigth() {
 		return heigth;
 	}
-	public int getId()
-	{
+
+	public int getId() {
 		return id;
 	}
-	public int getWidth()
-	{
+
+	public int getWidth() {
 		return width;
 	}
-	public void paint(Graphics g,Point p)
-	{
-		g.drawImage(ImageProvider.getBlocks().get("yellowBlock"+this.getHeigth()+"x"+this.getWidth()),(p.x*Matrix.cellsize)+Matrix.cellsize+MainFrame.sumX,
-				(p.y*Matrix.cellsize)+Matrix.cellsize+MainFrame.sumY,null);
+
+	public void paint(Graphics g, Point p) {
+		g.drawImage(ImageProvider.getBlocks().get("yellowBlock" + this.getHeigth() + "x" + this.getWidth()),
+				(p.x * Matrix.cellsize) + MainFrame.sumX, (p.y * Matrix.cellsize) + MainFrame.sumY, null);
 	}
 }
