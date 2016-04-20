@@ -250,6 +250,9 @@ public class Matrix {
 		for (int i = 0; i <= height + 1; i++) {
 			for (int j = 0; j <= width + 1; j++) {
 				g.setColor(Color.DARK_GRAY);
+				if (exitCell.x == i - 1 && exitCell.y == j) {
+					g.setColor(Color.LIGHT_GRAY);
+				}
 				g.fillRect((j * Matrix.cellsize) - Matrix.cellsize + MainFrame.sumX,
 						(i * Matrix.cellsize) - Matrix.cellsize + MainFrame.sumY, Matrix.cellsize, Matrix.cellsize);
 			}
