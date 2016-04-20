@@ -21,24 +21,37 @@ public class GamePanel extends JPanel {
 	private int bselected;
 	private int changeX;
 	private int changeY;
-	private int curX;
-	private int curY;
 	private ModifiedButton close;
 	private ModifiedButton comeToStart;
+	private int curX;
+	private int curY;
 	private ModifiedButton dlv;
-	private ModifiedButton help;
 	private MainFrame frame;
+	private ModifiedButton help;
 	private World world;
 
-	public GamePanel(final MainFrame frame) {
+	public GamePanel(final MainFrame frame,String level) {
 		super(null);
 		this.frame = frame;
-		this.world = new World();
+		this.world = new World(level);
 		this.setSize(frame.getSize());
 		this.setButtons();
 		this.bselected = -1;
 		this.setFocusable(true);
 		this.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				int actualwidth = world.getMatrix().getWidth() * Matrix.cellsize;
+				int actualheight = world.getMatrix().getHeight() * Matrix.cellsize;
+				curX = e.getX() - MainFrame.sumX;
+				curY = e.getY() - MainFrame.sumY;
+				if ((curX > 0 && curX < actualwidth) && (curY > 0 && curY < actualheight)) {
+					curX /= Matrix.cellsize;
+					curY /= Matrix.cellsize;
+					bselected = world.getMatrix().getCell(curY, curX);
+				}
+			}
+
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				int actualwidth = world.getMatrix().getWidth() * Matrix.cellsize;
@@ -50,19 +63,6 @@ public class GamePanel extends JPanel {
 					changeY /= Matrix.cellsize;
 					dragged();
 					repaint();
-				}
-			}
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-				int actualwidth = world.getMatrix().getWidth() * Matrix.cellsize;
-				int actualheight = world.getMatrix().getHeight() * Matrix.cellsize;
-				curX = e.getX() - MainFrame.sumX;
-				curY = e.getY() - MainFrame.sumY;
-				if ((curX > 0 && curX < actualwidth) && (curY > 0 && curY < actualheight)) {
-					curX /= Matrix.cellsize;
-					curY /= Matrix.cellsize;
-					bselected = world.getMatrix().getCell(curY, curX);
 				}
 			}
 		});
@@ -103,7 +103,6 @@ public class GamePanel extends JPanel {
 		this.dlv.setBounds((int) (this.getWidth() * 0.8), (int) (this.getHeight() * 0.15), dlv.getWidth(),
 				dlv.getHeight());
 		this.dlv.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				Interface dlv = new Interface();
 				ArrayList<Spostamenti> spostamenti = dlv.compute(world);
@@ -135,7 +134,6 @@ public class GamePanel extends JPanel {
 		});
 		this.help = new ModifiedButton(ImageProvider.getHelp1(), ImageProvider.getHelp2());
 		this.help.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				Interface dlv = new Interface();
 				ArrayList<Spostamenti> spostamenti = dlv.compute(world);
@@ -167,7 +165,6 @@ public class GamePanel extends JPanel {
 				help.getHeight());
 		this.comeToStart = new ModifiedButton(ImageProvider.getCome1(), ImageProvider.getCome2());
 		this.comeToStart.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				frame.switchPanelStart();
 			}
@@ -176,7 +173,6 @@ public class GamePanel extends JPanel {
 				comeToStart.getWidth(), comeToStart.getHeight());
 		this.close = new ModifiedButton(ImageProvider.getClosePlayPanel1(), ImageProvider.getClosePlayPanel2());
 		this.close.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				frame.confirmExit();
 			}

@@ -1,5 +1,4 @@
 package it.slidingblock.dlv;
-
 public class ExitCell
 {
 	public int x;
@@ -25,5 +24,4 @@ public class ExitCell
 	{
 		this.y = y;
 	}
-	
 }

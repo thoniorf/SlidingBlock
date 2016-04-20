@@ -1,5 +1,4 @@
 package it.slidingblock.dlv;
-
 public class Contiene
 {
 	int b;
@@ -46,5 +45,4 @@ public class Contiene
 		this.y = y;
 		this.t = t;
 	}
-
 }
