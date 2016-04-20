@@ -29,9 +29,13 @@ public class MainFrame extends JFrame
 	{
 		new RequestPanel(this,1);
 	}
-	public void switchPanelPlay()
+	public GamePanel getGamePanel()
 	{
-		panel = new GamePanel(this);
+		return panel;
+	}
+	public void switchPanelPlay(String level)
+	{
+		panel = new GamePanel(this,level);
 		this.setContentPane(panel);
 		this.revalidate();
 	}
@@ -39,9 +43,5 @@ public class MainFrame extends JFrame
 	{
 		this.setContentPane(new StartPanel(this));
 		this.revalidate();
-	}
-	public GamePanel getGamePanel()
-	{
-		return panel;
 	}
 }

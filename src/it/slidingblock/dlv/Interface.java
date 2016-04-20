@@ -13,36 +13,34 @@ key= 0 ;
 }
 public ArrayList<Spostamenti> compute(World w){
 long begin=System.currentTimeMillis();
-int maxint= 6 ;
+int maxint= 0 ;
 Point exitPoint=w.getMatrix().getExitCell();
 ExitCell exit= new ExitCell(exitPoint.x,exitPoint.y);
-Set<Blocco> blocchiDLV= new HashSet<Blocco>();
 Set<BKey> bKeyDLV= new HashSet<BKey>();
 ArrayList<Block> blocchiJ=w.getBlocks();
 Set<PosSposSu> posSposSu= new HashSet<PosSposSu>();
 ArrayList<Spostamenti> spostamenti= new ArrayList<Spostamenti>();
 for(Block b:blocchiJ)
 {
+if(b.getId()>maxint)
+maxint=b.getId();
 posSposSu.add( new PosSposSu(b.getId(),b.getId()));
 posSposSu.add( new PosSposSu(b.getId(), 0 ));
 if(b instanceof KeyBlock)
 key=b.getId();
 Point bk=w.getMatrix().getFirstPoint(b.getId());
 bKeyDLV.add( new BKey(b.getId(),bk.y,bk.x, 0 ));
-ArrayList<Point> temp=w.getMatrix().getPosition(b.getId());
-for(Point p:temp)
-blocchiDLV.add( new Blocco(b.getId(),p.x,p.y));
 }
 Point keyPoint=w.getMatrix().getFirstPoint(key);
 if(keyPoint.y==exit.x&&keyPoint.x==exit.y)
 return spostamenti;
-resolve(spostamenti,key,w.getMatrix().getDiverse(),posSposSu,w.getMatrix().getTotBlockCol(w.getBlocks()),w.getMatrix().getCelle(),blocchiDLV,bKeyDLV,exit,maxint,w.getMatrix().getUp(),w.getMatrix().getLeft(),w.getMatrix().getRight(),w.getMatrix().getDown(),w.getMatrix().getAdiacenze());
+resolve(spostamenti,key,w.getMatrix().getDiverse(),posSposSu,w.getMatrix().getTotBlockCol(w.getBlocks()),w.getMatrix().getCelle(),bKeyDLV,exit,maxint,w.getMatrix().getUp(),w.getMatrix().getLeft(),w.getMatrix().getRight(),w.getMatrix().getDown(),w.getMatrix().getAdiacenze());
 System.out.println( "Tempo impiegato: " +(System.currentTimeMillis()-begin)+ " millisecondi" );
 System.out.println( "Tempo impiegato: " +(System.currentTimeMillis()-begin)/ 1000 + " secondi" );
 System.out.println( "Tempo impiegato: " +((System.currentTimeMillis()-begin)/ 1000 )/ 60 + " minuti" );
 return spostamenti;
 }
-public  void  resolve(ArrayList<Spostamenti> spostamenti,int key,Set<Diversa> diversa,Set<PosSposSu> posSposSu,Set<TotBlockCol> totBlockCol,Set<Contiene> contiene,Set<Blocco> blocchiDLV,Set<BKey> bKeyDLV,ExitCell exit,int maxint,Set<Adiacenze> up,Set<Adiacenze> left,Set<Adiacenze> right,Set<Adiacenze> down,Set<Adiacenze> adiacenze){
+public  void  resolve(ArrayList<Spostamenti> spostamenti,int key,Set<Diversa> diversa,Set<PosSposSu> posSposSu,Set<TotBlockCol> totBlockCol,Set<Contiene> contiene,Set<BKey> bKeyDLV,ExitCell exit,int maxint,Set<Adiacenze> up,Set<Adiacenze> left,Set<Adiacenze> right,Set<Adiacenze> down,Set<Adiacenze> adiacenze){
 
 	// ---- START - startProgram ---- 
 it.unical.mat.jdlv.program.JDLV_Logger.getInstance().logInfoMessage("Creation EXECUTING JDLV module.");
@@ -64,8 +62,6 @@ _JDLV_PROGRAM_EXECUTING.addText(it.unical.mat.jdlv.program.TypeSolver.getNameTra
 it.unical.mat.jdlv.program.JDLV_Logger.getInstance().logInfoMessage("Add in-mapping 'posSposSu::posSpostSu' in module EXECUTING:"+ it.unical.mat.jdlv.program.JDLV_Logger.getInstance().getPrettyCode(it.unical.mat.jdlv.program.TypeSolver.getNameTranslation(posSposSu,"posSpostSu"), 0));
 _JDLV_PROGRAM_EXECUTING.addText(it.unical.mat.jdlv.program.TypeSolver.getNameTranslation(totBlockCol,"totBlockCol"));
 it.unical.mat.jdlv.program.JDLV_Logger.getInstance().logInfoMessage("Add in-mapping 'totBlockCol::totBlockCol' in module EXECUTING:"+ it.unical.mat.jdlv.program.JDLV_Logger.getInstance().getPrettyCode(it.unical.mat.jdlv.program.TypeSolver.getNameTranslation(totBlockCol,"totBlockCol"), 0));
-_JDLV_PROGRAM_EXECUTING.addText(it.unical.mat.jdlv.program.TypeSolver.getNameTranslation(blocchiDLV,"blocco"));
-it.unical.mat.jdlv.program.JDLV_Logger.getInstance().logInfoMessage("Add in-mapping 'blocchiDLV::blocco' in module EXECUTING:"+ it.unical.mat.jdlv.program.JDLV_Logger.getInstance().getPrettyCode(it.unical.mat.jdlv.program.TypeSolver.getNameTranslation(blocchiDLV,"blocco"), 0));
 _JDLV_PROGRAM_EXECUTING.addText(it.unical.mat.jdlv.program.TypeSolver.getNameTranslation(bKeyDLV,"bKey"));
 it.unical.mat.jdlv.program.JDLV_Logger.getInstance().logInfoMessage("Add in-mapping 'bKeyDLV::bKey' in module EXECUTING:"+ it.unical.mat.jdlv.program.JDLV_Logger.getInstance().getPrettyCode(it.unical.mat.jdlv.program.TypeSolver.getNameTranslation(bKeyDLV,"bKey"), 0));
 _JDLV_PROGRAM_EXECUTING.addText(it.unical.mat.jdlv.program.TypeSolver.getNameTranslation(exit,"uscita"));
@@ -104,9 +100,9 @@ it.unical.mat.jdlv.program.TypeSolver.loadPredicate(spostamenti, "sposta",_tempo
 it.unical.mat.jdlv.program.JDLV_Logger.getInstance().logInfoMessage("Process new answer_set"+ '\n' + "Results:"+ '\n'+ "spostamenti " + spostamenti.size() + " elements"+ '\n' + it.unical.mat.jdlv.program.JDLV_Logger.getInstance().getPrettyObject(spostamenti,0));
 }
 if(_JDLV_INVOCATION_EXECUTING.haveModel()==false){
-if(maxint< 35 )
+if(maxint< 40 )
 maxint+= 3 ;
-resolve(spostamenti,key,diversa,posSposSu,totBlockCol,contiene,blocchiDLV,bKeyDLV,exit,maxint,up,left,right,down,adiacenze);
+resolve(spostamenti,key,diversa,posSposSu,totBlockCol,contiene,bKeyDLV,exit,maxint,up,left,right,down,adiacenze);
 }
 if(!_JDLV_INVOCATION_EXECUTING.getErrors().isEmpty()){
 throw new java.lang.RuntimeException(_JDLV_INVOCATION_EXECUTING.getErrors().get(0).getText());

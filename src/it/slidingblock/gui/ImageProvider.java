@@ -15,13 +15,19 @@ public class ImageProvider
 	private static ImageIcon come2;
 	private static ImageIcon dlv1;
 	private static ImageIcon dlv2;
-	private static ImageIcon ok2;
-	private static ImageIcon ok1;
+	private static ImageIcon level1;
+	private static ImageIcon level1over;
+	private static ImageIcon level2;
+	private static ImageIcon level2over;
+	private static ImageIcon level3;
+	private static ImageIcon level3over;
 	private static Image gamePanel;
 	private static ImageIcon help1;
 	private static ImageIcon help2;
 	private static ImageIcon no1;
 	private static ImageIcon no2;
+	private static ImageIcon ok1;
+	private static ImageIcon ok2;
 	private static ImageIcon play1;
 	private static ImageIcon play2;
 	private static Image startPanel;
@@ -83,6 +89,24 @@ public class ImageProvider
 			no2 = new ImageIcon(ImageIO.read(ImageProvider.class
 					.getClassLoader().getResource(
 							"it/slidingblock/assets/no2.png")));
+			level1 = new ImageIcon(ImageIO.read(ImageProvider.class
+					.getClassLoader().getResource(
+							"it/slidingblock/assets/level1.png")));
+			level1over = new ImageIcon(ImageIO.read(ImageProvider.class
+					.getClassLoader().getResource(
+							"it/slidingblock/assets/level1over.png")));
+			level2 = new ImageIcon(ImageIO.read(ImageProvider.class
+					.getClassLoader().getResource(
+							"it/slidingblock/assets/level2.png")));
+			level2over = new ImageIcon(ImageIO.read(ImageProvider.class
+					.getClassLoader().getResource(
+							"it/slidingblock/assets/level2over.png")));
+			level3 = new ImageIcon(ImageIO.read(ImageProvider.class
+					.getClassLoader().getResource(
+							"it/slidingblock/assets/level3.png")));
+			level3over = new ImageIcon(ImageIO.read(ImageProvider.class
+					.getClassLoader().getResource(
+							"it/slidingblock/assets/level3over.png")));
 			closePlayPanel1 = new ImageIcon(ImageIO.read(ImageProvider.class
 					.getClassLoader().getResource(
 							"it/slidingblock/assets/closePlayPanel1.png")));
@@ -102,13 +126,29 @@ public class ImageProvider
 			System.out.println("Cannot read Image");
 		}
 	}
-	public static ImageIcon getOk2()
+	public static ImageIcon getLevel1()
 	{
-		return ok2;
+		return level1;
 	}
-	public static ImageIcon getOk1()
+	public static ImageIcon getLevel1over()
 	{
-		return ok1;
+		return level1over;
+	}
+	public static ImageIcon getLevel2()
+	{
+		return level2;
+	}
+	public static ImageIcon getLevel2over()
+	{
+		return level2over;
+	}
+	public static ImageIcon getLevel3()
+	{
+		return level3;
+	}
+	public static ImageIcon getLevel3over()
+	{
+		return level3over;
 	}
 	public static HashMap<String, Image> getBlocks()
 	{
@@ -165,6 +205,14 @@ public class ImageProvider
 	public static ImageIcon getNo2()
 	{
 		return no2;
+	}
+	public static ImageIcon getOk1()
+	{
+		return ok1;
+	}
+	public static ImageIcon getOk2()
+	{
+		return ok2;
 	}
 	public static ImageIcon getPlay1()
 	{

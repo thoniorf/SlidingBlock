@@ -17,7 +17,7 @@ public class StartPanel extends JPanel
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				frame.switchPanelPlay();
+				new SelectLevel(frame);
 			}
 		});
 		this.play.setBounds((int) (this.getWidth()*0.1),(int) (this.getHeight()*0.60),play.getWidth(),play.getHeight());
