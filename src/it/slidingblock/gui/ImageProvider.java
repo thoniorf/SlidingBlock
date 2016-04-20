@@ -22,6 +22,7 @@ public class ImageProvider
 	private static ImageIcon level3;
 	private static ImageIcon level3over;
 	private static Image gamePanel;
+	private static Image congratulition;
 	private static ImageIcon help1;
 	private static ImageIcon help2;
 	private static ImageIcon no1;
@@ -39,6 +40,8 @@ public class ImageProvider
 		{
 			startPanel = ImageIO.read(ImageProvider.class.getClassLoader()
 					.getResource("it/slidingblock/assets/startPanel.png"));
+			congratulition = ImageIO.read(ImageProvider.class.getClassLoader()
+					.getResource("it/slidingblock/assets/congratulition.png"));
 			gamePanel = ImageIO.read(ImageProvider.class.getClassLoader()
 					.getResource("it/slidingblock/assets/gamePanel.png"));
 			play1 = new ImageIcon(ImageIO.read(ImageProvider.class

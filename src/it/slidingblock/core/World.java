@@ -41,7 +41,7 @@ public class World {
 	public void makeLevel() {
 		System.out.println("level1");
 		Point exit = new Point(2, 0);
-		matrix = new Matrix(3, 3, exit, 1);
+		matrix = new Matrix(3, 3, exit);
 		// other block
 		for (int i = 1; i < 6; i++) {
 			blocks.add(new Block(i, 1, 1));
@@ -60,7 +60,7 @@ public class World {
 	public void makeLevel2() {
 		System.out.println("level2");
 		Point exit2 = new Point(2, 0);
-		matrix = new Matrix(3, 4, exit2, 1);
+		matrix = new Matrix(3, 4, exit2);
 		// other block
 		for (int i = 1; i < 6; i++) {
 			blocks.add(new Block(i, 1, 1));
@@ -80,7 +80,7 @@ public class World {
 		System.out.println("level3");
 		// non funziona il paint component sul blocco chiave
 		Point exit2 = new Point(2, 0);
-		matrix = new Matrix(4, 4, exit2, 1);
+		matrix = new Matrix(4, 4, exit2);
 		for (int i = 1; i < 6; i++) {
 			blocks.add(new Block(i, 1, 1));
 		}

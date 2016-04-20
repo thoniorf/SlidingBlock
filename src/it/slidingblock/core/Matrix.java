@@ -17,7 +17,6 @@ import it.slidingblock.gui.MainFrame;
 public class Matrix {
 	public static final int cellsize = 50;
 	private Point exitCell;
-	private int exitSize;
 	private int height;
 	private int[][] matrix;
 	private int width;
@@ -32,8 +31,7 @@ public class Matrix {
 		return exitCell;
 	}
 
-	public Matrix(int width, int height, Point exitCell, int exitSize) {
-		this.exitSize = exitSize;
+	public Matrix(int width, int height, Point exitCell) {
 		this.width = width;
 		this.height = height;
 		this.exitCell = exitCell;
