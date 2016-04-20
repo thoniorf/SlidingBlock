@@ -22,7 +22,6 @@ public class ImageProvider
 	private static ImageIcon level3;
 	private static ImageIcon level3over;
 	private static Image gamePanel;
-	private static Image congratulition;
 	private static ImageIcon help1;
 	private static ImageIcon help2;
 	private static ImageIcon no1;
@@ -34,6 +33,7 @@ public class ImageProvider
 	private static Image startPanel;
 	private static ImageIcon yes1;
 	private static ImageIcon yes2;
+	private static Image congratulition;
 	static
 	{
 		try
@@ -237,6 +237,10 @@ public class ImageProvider
 	{
 		return yes2;
 	}
+	public static Image getCongratulition()
+	{
+		return congratulition;
+	}
 	private static void loadBlocks(String block) throws IOException
 	{
 		blocks.put(
@@ -244,4 +248,5 @@ public class ImageProvider
 				ImageIO.read(ImageProvider.class.getClassLoader().getResource(
 						"it/slidingblock/assets/" + block + ".png")));
 	}
+	
 }
