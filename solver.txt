@@ -1,45 +1,23 @@
-row(X) :- #int(X), dim(T), X < T.
-col(X) :- #int(X), dim(T), X < T.
-cella(X, Y) :- row(X), col(Y).
-piena(X, Y) :- cella(X, Y), blocco(_, X, Y).
-contiene(B, X, Y, 0) :- cella(X, Y), blocco(B, X, Y).
-contiene(0, X, Y, 0) :- cella(X, Y), not piena(X, Y).
-right(X, Y, X, Y1) :- cella(X, Y), cella(X, Y1), Y1 = Y + 1.
-left(X, Y, X, Y1) :- cella(X, Y), cella(X, Y1), Y1 = Y - 1.
-down(X, Y, X1, Y) :- cella(X, Y), cella(X1, Y), X1 = X + 1.
-up(X, Y, X1, Y) :- cella(X, Y), cella(X1, Y), X1 = X - 1.
-adiacente(X, Y, X1, Y1) :- right(X1, Y1, X, Y).
-adiacente(X, Y, X1, Y1) :- left(X1, Y1, X, Y).
-adiacente(X, Y, X1, Y1) :- down(X1, Y1, X, Y).
-adiacente(X, Y, X1, Y1) :- up(X1, Y1, X, Y).
-diversa(X,Y,X,Y1):-cella(X,Y),cella(X,Y1),Y<>Y1.
-diversa(X,Y,X1,Y):-cella(X,Y),cella(X1,Y),X<>X1.
-diversa(X,Y,X1,Y1):-cella(X,Y),cella(X1,Y1),Y<>Y1,X<>X1.
-posSpostSu(B, B) :- blocco(B, _, _).
-posSpostSu(B, 0) :- blocco(B, _, _).
-totBlockCol(B, T) :- bKey(B, _, _, _), #count{G,X1,Y1 : contiene(G, X1, Y1, 0), G = B} = L, #int(L), T = L - 1.
-sposta(B, X, Y, X1, Y1, T1) v nonSposta(B, X, Y, X1, Y1, T1) :- T1 = T + 1, bKey(B, X, Y, T), adiacente(X, Y, X1, Y1), contiene(0, X1, Y1, T), turno(T1).
+%%%%%%%%%%%%%%%%%%%%%%%%%GUESS%%%%%%%%%%%%%%%%%%%%
+sposta(B, X, Y, X1, Y1, T1) v nonSposta(B, X, Y, X1, Y1, T1) :- T1 = T + 1, bKey(B, X, Y, T), adiacente(X, Y, X1, Y1), contiene(0, X1, Y1, T).
 spostatiIN(X, Y, T1) :- sposta(_, _, _, X, Y, T1).
-spostatiDA(B, X, Y, T1) :- sposta(B, X, Y, _, _, T1), not spostatiIN(X, Y, T1).
-contiene(B, X, Y, T) :- sposta(B, _, _, X, Y, T), turno(T).
-contiene(0, X, Y, T) :- spostatiDA(B, X, Y, T), turno(T).
-contiene(B, X, Y, T1) :- contiene(B, X, Y, T), T1 = T + 1, not spostatiDA(B, X, Y, T1), B > 0, turno(T1).
-contiene(0, X, Y, T1) :- contiene(0, X, Y, T), T1 = T + 1, not spostatiIN(X, Y, T1), turno(T1).
+%%%%%%%%%%%%%%%%%%%%%%%%%AGGIORNAMENTI%%%%%%%%%%%%
+contiene(B, X, Y, T) :- sposta(B, _, _, X, Y, T).
+contiene(0, X, Y, T) :- sposta(B, X, Y, _, _, T),not spostatiIN(X,Y,T).
+contiene(B, X, Y, T1) :- contiene(B, X, Y, T), T1 = T + 1, sposta(B1, _, _ ,_ ,_, T1),B1<>B, B > 0.
+contiene(0, X, Y, T1) :- contiene(0, X, Y, T), T1 = T + 1, not spostatiIN(X, Y, T1).
 sposta(B, X1, Y1, X2, Y2, T1) :- sposta(B, X, Y, XX, YY, T1), up(X, Y, XX, YY), up(X1, Y1, X2, Y2), contiene(B,X1,Y1,T),diversa(X,Y,X1,Y1), T = T1 - 1.
 sposta(B, X1, Y1, X2, Y2, T1) :- sposta(B, X, Y, XX, YY, T1), down(X, Y, XX, YY), down(X1, Y1, X2, Y2), contiene(B,X1,Y1,T),diversa(X,Y,X1,Y1), T = T1 - 1.
 sposta(B, X1, Y1, X2, Y2, T1) :- sposta(B, X, Y, XX, YY, T1), right(X, Y, XX, YY), right(X1, Y1, X2, Y2), contiene(B,X1,Y1,T),diversa(X,Y,X1,Y1), T = T1 - 1.
 sposta(B, X1, Y1, X2, Y2, T1) :- sposta(B, X, Y, XX, YY, T1), left(X, Y, XX, YY), left(X1, Y1, X2, Y2), contiene(B,X1,Y1,T),diversa(X,Y,X1,Y1), T = T1 - 1.
-bKey(B, X1, Y1, T1) :- T1 = T + 1, bKey(B, X, Y, T), sposta(B, X, Y, X1, Y1, T1), turno(T1).
-bKey(BB, X, Y, T1) :- T1 = T + 1, bKey(BB, X, Y, T), sposta(B, _, _, _, _, T1), BB != B, turno(T1).
-:- bKey(B, X, Y, T), sposta(B, X, Y, XX, YY, T1), up(X, Y, XX, YY), #count{G,X1,Y1 : G = B, up(X1, Y1, X2, Y2), contiene(G,X1,Y1,T),diversa(X,Y,X1,Y1), contiene(F, X2, Y2, T), posSpostSu(G, F)} = L, #int(L), totBlockCol(B, NUM), L != NUM, T1 = T + 1.
-:- bKey(B, X, Y, T), sposta(B, X, Y, XX, YY, T1), down(X, Y, XX, YY), #count{G,X1,Y1 : G = B, down(X1, Y1, X2, Y2), contiene(G,X1,Y1,T),diversa(X,Y,X1,Y1), contiene(F, X2, Y2, T), posSpostSu(G, F)} = L, #int(L), totBlockCol(B, NUM), L != NUM, T1 = T + 1.
-:- bKey(B, X, Y, T), sposta(B, X, Y, XX, YY, T1), right(X, Y, XX, YY), #count{G,X1,Y1 : G = B, right(X1, Y1, X2, Y2), contiene(G,X1,Y1,T),diversa(X,Y,X1,Y1), contiene(F, X2, Y2, T), posSpostSu(G, F)} = L, #int(L), totBlockCol(B, NUM), L != NUM, T1 = T + 1.
-:- bKey(B, X, Y, T), sposta(B, X, Y, XX, YY, T1), left(X, Y, XX, YY), #count{G,X1,Y1 : G = B, left(X1, Y1, X2, Y2),contiene(G,X1,Y1,T),diversa(X,Y,X1,Y1), contiene(F, X2, Y2, T), posSpostSu(G, F)} = L, #int(L), totBlockCol(B, NUM), L != NUM, T1 = T + 1.
+bKey(B, X1, Y1, T1) :- T1 = T + 1, bKey(B, X, Y, T), sposta(B, X, Y, X1, Y1, T1).
+bKey(BB, X, Y, T1) :- T1 = T + 1, bKey(BB, X, Y, T), sposta(B, _, _, _, _, T1), BB != B.
+%%%%%%%%%%%%%%%%%%%%%%%%%CONSTRAINTS%%%%%%%%%%%%%%%
 :- contiene(B, X, Y, T), contiene(A, X, Y, T), B != A.
 :- sposta(B, X, Y, X1, Y1, T1), sposta(B, X1, Y1, X, Y, T), T = T1 + 1.
 :- sposta(B, _, _, _, _, T), sposta(B1, _, _, _, _, T), B1 != B.
 :- sposta(_, _, _, _, _, T1), uscita(N, M), key(K), contiene(G, N, M, T), G = K, T1 = T + 1.
+:- bKey(_, _, _, T1), uscita(N, M), key(K), contiene(G, N, M, T), G = K, T1 = T + 1.
 :- sposta(B, X, Y, X1, Y1, T), sposta(B, X, Y, X3, Y3, T), X3 != X1.
 :- sposta(B, X, Y, X1, Y1, T), sposta(B, X, Y, X3, Y3, T), Y3 != Y1.
-:- not #count{B,T : sposta(B, A, C, X, Y, T), key(B), uscita(X, Y)} = 1.
-:~ turno(T). [T:1]
+:- #count{B,T : sposta(B, A, C, X, Y, T), key(B), uscita(X, Y)}<1.

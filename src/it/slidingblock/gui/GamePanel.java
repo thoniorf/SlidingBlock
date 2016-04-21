@@ -70,12 +70,23 @@ public class GamePanel extends JPanel
 					changeX /= Matrix.cellsize;
 					changeY /= Matrix.cellsize;
 					dragged();
-					repaint();
 					if (world.getMatrix().getCell(
 							world.getMatrix().getExitCell().x,
 							world.getMatrix().getExitCell().y) == world
 							.getMatrix().getKey())
+					{
 						win = true;
+						paintImmediately(new Rectangle(0, 0, getWidth(),
+								getHeight()));
+						try
+						{
+							Thread.sleep(2000);
+						} catch (InterruptedException e1)
+						{
+							e1.printStackTrace();
+						}
+					}
+					repaint();
 				}
 			}
 		});
