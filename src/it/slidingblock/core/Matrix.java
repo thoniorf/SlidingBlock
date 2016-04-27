@@ -8,8 +8,6 @@ import java.util.Set;
 import it.slidingblock.core.block.Block;
 import it.slidingblock.core.block.KeyBlock;
 import it.slidingblock.dlv.Adiacenze;
-import it.slidingblock.dlv.Contiene;
-import it.slidingblock.dlv.Diversa;
 import it.slidingblock.gui.MainFrame;
 public class Matrix
 {
@@ -24,7 +22,6 @@ public class Matrix
 	private Set<Adiacenze> down = new HashSet<Adiacenze>();
 	private Set<Adiacenze> left = new HashSet<Adiacenze>();
 	private Set<Adiacenze> adiacenze = new HashSet<Adiacenze>();
-	private Set<Diversa> diverse = new HashSet<Diversa>();
 	public Point getExitCell()
 	{
 		return exitCell;
@@ -40,23 +37,7 @@ public class Matrix
 		{
 			for (int j = 0; j < width; j++)
 			{
-				for (int a = 0; a < height; a++)
-				{
-					for (int b = 0; b < width; b++)
-					{
-						if (i != a || j != b)
-						{
-							diverse.add(new Diversa(i, j, a, b));
-						}
-					}
-				}
-			}
-		}
-		for (int i = 0; i < width; i++)
-		{
-			for (int j = 0; j < height; j++)
-			{
-				if ((i + 1) < width)
+				if ((i + 1) < height)
 				{
 					down.add(new Adiacenze(i, j, i + 1, j));
 					adiacenze.add(new Adiacenze(i, j, i + 1, j));
@@ -66,7 +47,7 @@ public class Matrix
 					up.add(new Adiacenze(i, j, i - 1, j));
 					adiacenze.add(new Adiacenze(i, j, i - 1, j));
 				}
-				if ((j + 1) < height)
+				if ((j + 1) < width)
 				{
 					right.add(new Adiacenze(i, j, i, j + 1));
 					adiacenze.add(new Adiacenze(i, j, i, j + 1));
@@ -78,22 +59,6 @@ public class Matrix
 				}
 			}
 		}
-	}
-	public Set<Diversa> getDiverse()
-	{
-		return diverse;
-	}
-	public Set<Contiene> getCelle()
-	{
-		Set<Contiene> celle = new HashSet<Contiene>();
-		for (int i = 0; i < height; i++)
-		{
-			for (int j = 0; j < width; j++)
-			{
-				celle.add(new Contiene(matrix[i][j], i, j, 0));
-			}
-		}
-		return celle;
 	}
 	public Set<Adiacenze> getRight()
 	{
@@ -206,6 +171,21 @@ public class Matrix
 			for (int j = 0; j < width; j++)
 			{
 				if (matrix[i][j] == id)
+				{
+					temp.add(new Point(i, j));
+				}
+			}
+		}
+		return temp;
+	}
+	public ArrayList<Point> getEmpty()
+	{
+		ArrayList<Point> temp = new ArrayList<Point>();
+		for (int i = 0; i < height; i++)
+		{
+			for (int j = 0; j < width; j++)
+			{
+				if (matrix[i][j] == 0)
 				{
 					temp.add(new Point(i, j));
 				}

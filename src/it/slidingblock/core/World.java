@@ -66,11 +66,11 @@ public class World {
 			blocks.add(new Block(i, 1, 1));
 		}
 		// insert
-		matrix.insert(blocks.get(0), new Point(0, 0));
+		matrix.insert(blocks.get(0), new Point(3, 0));
 		matrix.insert(blocks.get(1), new Point(1, 1));
 		matrix.insert(blocks.get(2), new Point(1, 2));
-		matrix.insert(blocks.get(3), new Point(2, 1));
-		matrix.insert(blocks.get(4), new Point(2, 2));
+		matrix.insert(blocks.get(3), new Point(2, 0));
+		matrix.insert(blocks.get(4), new Point(2, 1));
 		// key block
 		blocks.add(new KeyBlock(6, 2, 1));
 		matrix.insert(blocks.get(5), new Point(0, 1));
@@ -81,18 +81,20 @@ public class World {
 		// non funziona il paint component sul blocco chiave
 		Point exit2 = new Point(2, 0);
 		matrix = new Matrix(4, 4, exit2);
-		for (int i = 1; i < 6; i++) {
+		for (int i = 1; i < 4; i++) {
 			blocks.add(new Block(i, 1, 1));
 		}
+		blocks.add(new Block(4,1,2));
+		blocks.add(new Block(5,2,2));
 		// insert
-		matrix.insert(blocks.get(0), new Point(0, 0));
+		matrix.insert(blocks.get(0), new Point(1, 0));
 		matrix.insert(blocks.get(1), new Point(1, 1));
 		matrix.insert(blocks.get(2), new Point(1, 2));
-		matrix.insert(blocks.get(3), new Point(2, 1));
-		matrix.insert(blocks.get(4), new Point(2, 2));
+		matrix.insert(blocks.get(3), new Point(1, 3));
+		matrix.insert(blocks.get(4), new Point(2, 0));
 		// key block
 		blocks.add(new KeyBlock(6, 2, 1));
-		matrix.insert(blocks.get(5), new Point(0, 1));
+		matrix.insert(blocks.get(5), new Point(0, 0));
 	}
 
 	public void paint(Graphics g) {

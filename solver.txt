@@ -1,11 +1,13 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%ASPRECENDENTI%%%%%%%%%%%%
+sposta(B, X, Y, X1, Y1, T1):-giaSpostati(B, X, Y, X1, Y1, T1).
 %%%%%%%%%%%%%%%%%%%%%%%%%GUESS%%%%%%%%%%%%%%%%%%%%
-sposta(B, X, Y, X1, Y1, T1) v nonSposta(B, X, Y, X1, Y1, T1) :- T1 = T + 1, bKey(B, X, Y, T), adiacente(X, Y, X1, Y1), contiene(0, X1, Y1, T).
+sposta(B, X, Y, X1, Y1, T1) v nonSposta(B, X, Y, X1, Y1, T1) :- T1 = T + 1, bKey(B, X, Y, T), adiacente(X, Y, X1, Y1), contiene(0, X1, Y1, T),turno(T1).
 spostatiIN(X, Y, T1) :- sposta(_, _, _, X, Y, T1).
 %%%%%%%%%%%%%%%%%%%%%%%%%AGGIORNAMENTI%%%%%%%%%%%%
-contiene(B, X, Y, T) :- sposta(B, _, _, X, Y, T).
-contiene(0, X, Y, T) :- sposta(B, X, Y, _, _, T),not spostatiIN(X,Y,T).
-contiene(B, X, Y, T1) :- contiene(B, X, Y, T), T1 = T + 1, sposta(B1, _, _ ,_ ,_, T1),B1<>B, B > 0.
-contiene(0, X, Y, T1) :- contiene(0, X, Y, T), T1 = T + 1, not spostatiIN(X, Y, T1).
+contiene(B, X, Y, T) :- sposta(B, _, _, X, Y, T),turno(T).
+contiene(0, X, Y, T) :- sposta(B, X, Y, _, _, T),not spostatiIN(X,Y,T),turno(T).
+contiene(B, X, Y, T1) :- contiene(B, X, Y, T), T1 = T + 1, sposta(B1, _, _ ,_ ,_, T1),B1<>B, B > 0,turno(T1).
+contiene(0, X, Y, T1) :- contiene(0, X, Y, T), T1 = T + 1, not spostatiIN(X, Y, T1),turno(T1).
 sposta(B, X1, Y1, X2, Y2, T1) :- sposta(B, X, Y, XX, YY, T1), up(X, Y, XX, YY), up(X1, Y1, X2, Y2), contiene(B,X1,Y1,T),diversa(X,Y,X1,Y1), T = T1 - 1.
 sposta(B, X1, Y1, X2, Y2, T1) :- sposta(B, X, Y, XX, YY, T1), down(X, Y, XX, YY), down(X1, Y1, X2, Y2), contiene(B,X1,Y1,T),diversa(X,Y,X1,Y1), T = T1 - 1.
 sposta(B, X1, Y1, X2, Y2, T1) :- sposta(B, X, Y, XX, YY, T1), right(X, Y, XX, YY), right(X1, Y1, X2, Y2), contiene(B,X1,Y1,T),diversa(X,Y,X1,Y1), T = T1 - 1.
@@ -21,3 +23,4 @@ bKey(BB, X, Y, T1) :- T1 = T + 1, bKey(BB, X, Y, T), sposta(B, _, _, _, _, T1), 
 :- sposta(B, X, Y, X1, Y1, T), sposta(B, X, Y, X3, Y3, T), X3 != X1.
 :- sposta(B, X, Y, X1, Y1, T), sposta(B, X, Y, X3, Y3, T), Y3 != Y1.
 :- #count{B,T : sposta(B, A, C, X, Y, T), key(B), uscita(X, Y)}<1.
+:- #count{B,T : sposta(B, A, C, X, Y, T), turno(T)}<1.

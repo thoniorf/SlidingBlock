@@ -9,47 +9,64 @@ public class Interface{
 	{
 		key=0;
 	}
-	public ArrayList <Spostamenti> compute(World w){
-		long begin=System.currentTimeMillis();
-		int maxint=0;
+	public ArrayList <Spostamenti> compute(World w)
+	{
+		ArrayList<Integer> turno= new ArrayList<Integer>();
+		turno.add(1);
 		Point exitPoint=w.getMatrix().getExitCell();
-		ExitCell exit=new ExitCell(exitPoint.x,exitPoint.y);
-		Set<BKey> bKeyDLV=new HashSet<BKey>();
-		ArrayList<Block> blocchiJ = w.getBlocks(); 
-		ArrayList <Spostamenti> spostamenti=new ArrayList<Spostamenti>();	
-		for (Block b: blocchiJ)
+		Pair exit=new Pair(exitPoint.x,exitPoint.y); 
+		ArrayList <Spostamenti> spostamenti=new ArrayList<Spostamenti>();
+		Set <Contiene> contiene=new HashSet <Contiene>();	
+		Set <Pair> posSpost=new HashSet <Pair>();
+		Set <Pair> dim= new HashSet<Pair>();
+		for (Block b: w.getBlocks())
 		{
-			if(b.getId()>maxint)
-				maxint=b.getId();
+			posSpost.add(new Pair(b.getId(),0));
+			posSpost.add(new Pair(b.getId(),b.getId()));
+			dim.add(new Pair(b.getId(),w.getMatrix().getPosition(b.getId()).size()));
 			if (b instanceof KeyBlock)
 				key=b.getId();
 			Point bk=w.getMatrix().getFirstPoint(b.getId());
-			bKeyDLV.add(new BKey(b.getId(),bk.y,bk.x,0));				
+			for (Point p:w.getMatrix().getPosition(b.getId()))
+			{
+				if(p.x!=bk.y || p.y!=bk.x)
+					contiene.add(new Contiene(b.getId(),p.x,p.y,0,0));		
+			}
+			contiene.add(new Contiene(b.getId(),bk.y,bk.x,1,0));				
 		}
-		Point keyPoint=w.getMatrix().getFirstPoint(key);
-		if (keyPoint.y==exit.x&&keyPoint.x==exit.y)
-			return spostamenti;
-		resolve(spostamenti,key,w.getMatrix().getDiverse(),w.getMatrix().getCelle(),bKeyDLV,exit,maxint,w.getMatrix().getUp(),w.getMatrix().getLeft(),w.getMatrix().getRight(),w.getMatrix().getDown(),w.getMatrix().getAdiacenze());
+		for (Point pv:w.getMatrix().getEmpty())
+		{
+			contiene.add(new Contiene(0,pv.x,pv.y,0,0));
+		}
+		long begin=System.currentTimeMillis();
+		resolve(spostamenti,key,dim,posSpost,turno,contiene,exit,w.getMatrix().getUp(),w.getMatrix().getLeft(),w.getMatrix().getRight(),w.getMatrix().getDown(),w.getMatrix().getAdiacenze());
 		System.out.println("Tempo impiegato: "+(System.currentTimeMillis()-begin)+" millisecondi");
 		System.out.println("Tempo impiegato: "+(System.currentTimeMillis()-begin)/1000+" secondi");
 		System.out.println("Tempo impiegato: "+((System.currentTimeMillis()-begin)/1000)/60+" minuti");
 		return spostamenti;
 	}
-	public void resolve(ArrayList <Spostamenti> spostamenti,int key,Set <Diversa> diversa,Set <Contiene> contiene,Set<BKey> bKeyDLV,ExitCell exit,int maxint,Set<Adiacenze> up,Set<Adiacenze>left,Set<Adiacenze>right,Set<Adiacenze>down,Set<Adiacenze>adiacenze)
+	public void resolve(ArrayList <Spostamenti> spostamenti,int key,Set <Pair> dim,Set <Pair> posS, ArrayList<Integer> turno,Set <Contiene> contiene,Pair exit,Set<Adiacenze> up,Set<Adiacenze>left,Set<Adiacenze>right,Set<Adiacenze>down,Set<Adiacenze>adiacenze)
 	{
 		<#
 			//input e output per java
-			in=key::key,diversa::diversa,contiene::contiene,bKeyDLV::bKey,exit::uscita,right::right,left::left,up::up,down::down,adiacenze::adiacente;
+			in=key::key,dim::dim,posS::posSpost,turno::turno,contiene::contiene,exit::uscita,right::right,left::left,up::up,down::down,adiacenze::adiacente;
 			out=spostamenti::sposta;
 			FILE="./solver.txt";
-		#>
-		.("-n=1")
+		#>.("-n=1, -N=50")
 		if_no_answerset
 		{
-			//_JDLV_INVOCATION_EXECUTING.addOption("-n=1, -N="+maxint);
-			if (maxint<40)
-			maxint+=3;
-			resolve(spostamenti,key,diversa,contiene,bKeyDLV,exit,maxint,up,left,right,down,adiacenze);
+			if (turno.size()<40)
+			{	
+				if (turno.size()<12)
+					turno.add(turno.size()+1);
+				else
+				{
+					turno.add(turno.size()+1);
+					turno.add(turno.size()+1);
+					turno.add(turno.size()+1);
+				}
+			}
+			resolve(spostamenti,key,dim,posS,turno,contiene,exit,up,left,right,down,adiacenze);
 		}
 	}
 }

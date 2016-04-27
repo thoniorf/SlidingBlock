@@ -4,7 +4,16 @@ public class Contiene
 	int b;
 	int x;
 	int y;
+	int k;
 	int t;
+	public int getB()
+	{
+		return b;
+	}
+	public void setB(int b)
+	{
+		this.b = b;
+	}
 	public int getX()
 	{
 		return x;
@@ -21,13 +30,13 @@ public class Contiene
 	{
 		this.y = y;
 	}
-	public int getB()
+	public int getK()
 	{
-		return b;
+		return k;
 	}
-	public void setB(int b)
+	public void setK(int k)
 	{
-		this.b = b;
+		this.k = k;
 	}
 	public int getT()
 	{
@@ -37,12 +46,14 @@ public class Contiene
 	{
 		this.t = t;
 	}
-	public Contiene(int b, int x, int y, int t)
+	public Contiene(int b, int x, int y, int k, int t)
 	{
 		super();
 		this.b = b;
 		this.x = x;
 		this.y = y;
+		this.k = k;
 		this.t = t;
 	}
+	
 }
